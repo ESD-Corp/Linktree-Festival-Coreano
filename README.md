@@ -28,7 +28,7 @@ Después de editar `enlaces.js` o `rueda.js`, sube el número de versión en las
 
 ## Pendiente
 
-- Los formularios de Expositores y K-Pop dance crews todavía no tienen el link del Google Form:
+- El formulario de K-Pop dance crews todavía no tiene el link del Google Form:
   su `url` empieza por `#formulario-…`. Mientras tanto, al tocarlos aparece un aviso.
 - Después del 20 de octubre de 2026 el botón de K-Pop se ve atenuado (convocatoria cerrada).
 

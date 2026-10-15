@@ -1,6 +1,6 @@
 // Los 5 botones del linktree. Los "#formulario-…" esperan el link real del Google Form.
 export const BOTONES = [
-  { titulo: 'Formulario Expositores', detalle: 'Registro para tener un puesto', url: '#formulario-expositores', icono: 'puesto.png' },
+  { titulo: 'Formulario Expositores', detalle: 'Registro para tener un puesto', url: 'https://docs.google.com/forms/d/e/1FAIpQLSeBt7U1_kzhP4jhPNDD34wx-xxohwMS4JyMyS2vKqWPGKdEZA/viewform', icono: 'puesto.png' },
   { titulo: 'Formulario Voluntarios', detalle: 'Logística, prensa o atención', url: 'https://docs.google.com/forms/d/e/1FAIpQLScb_STZoVUkmY5LVGDxjxt8ojrgZl0zchC12yaxvfW9-xwvDw/viewform', icono: 'hand-heart' },
   { titulo: 'Formulario K-Pop dance crews', detalle: 'Videos hasta el 20 de octubre', url: '#formulario-kpop-dance-crews', icono: 'microphone', cierra: '2026-10-20' },
   { titulo: 'KFeel App Store', detalle: 'Tu entrada al festival, para iPhone', url: 'https://apps.apple.com/do/app/kfeel/id6810140328', icono: 'love-kpop' },
