@@ -62,43 +62,41 @@
   .escenario { perspective: 760px; margin-top: 4px; }
   .item {
     top: 50%; left: 50%;
-    width: min(344px, calc(100vw - 32px)); height: 64px;
-    display: grid; grid-template-columns: 46px 1fr; gap: 12px; align-items: center;
-    padding: 0 20px 0 8px;
+    width: min(344px, calc(100vw - 32px)); height: 56px;
+    display: grid; grid-template-columns: 40px 1fr; gap: 12px; align-items: center;
+    padding: 0 20px 0 6px;
     border: 3px solid var(--blanco); border-radius: 18px;
     background: var(--blanco); color: var(--marino);
     backface-visibility: hidden;
     transition: background-color 220ms ease, color 220ms ease, box-shadow 220ms ease;
   }
-  .disco { width: 46px; height: 46px; border-radius: 50%; display: grid; place-items: center; background: var(--rojo); color: var(--blanco); transition: background-color 220ms ease, color 220ms ease; }
-  .disco .ico-m { width: 27px; height: 27px; }
+  .disco { width: 40px; height: 40px; border-radius: 50%; display: grid; place-items: center; background: var(--rojo); color: var(--blanco); transition: background-color 220ms ease, color 220ms ease; }
+  .disco .ico-m { width: 24px; height: 24px; }
   .txt { min-width: 0; }
   .txt b { display: block; font-size: 17px; font-weight: 800; line-height: 1.15; white-space: nowrap; }
-  .txt small { display: block; font-size: 13px; font-weight: 500; line-height: 1.3; color: var(--humo); transition: color 220ms ease; }
-  .txt small.plazo { color: var(--rojo); font-weight: 800; }
   /* el del centro se vuelve sticker: rojo, borde blanco y sombra dura */
   .item.activo { background: var(--rojo); color: var(--blanco); box-shadow: 0 6px 0 rgb(10 18 45 / .45); }
   .item.activo .disco { background: var(--blanco); color: var(--rojo); }
-  .item.activo small, .item.activo small.plazo { color: var(--blanco); }
   .item.cerrado { opacity: .55; }
   .item:active { scale: 0.97; }
   .item:focus-visible { outline-color: var(--crema); }
 
-  footer { display: grid; grid-template-columns: 1fr auto; column-gap: 14px; align-items: end; padding: 8px 20px 14px 24px; }
-  footer .dia { grid-column: 1 / -1; }
-  .dia { margin: 0; font-size: clamp(15px, 4.5vw, 18px); white-space: nowrap; font-weight: 900; line-height: 1.1; text-transform: uppercase; }
-  .lugar { margin: 4px 0 10px; font-size: 13px; line-height: 1.35; color: var(--crema); }
-  .precio { display: grid; justify-items: start; gap: 7px; }
+  /* Datos del evento en tres líneas cortas: fecha, lugar y precio */
+  footer { display: grid; grid-template-columns: 1fr auto; column-gap: 12px; align-items: end; padding: 4px 18px 12px 24px; }
+  footer p { margin: 0; }
+  .dia { font-size: clamp(13px, 3.9vw, 15px); white-space: nowrap; font-weight: 900; line-height: 1.15; text-transform: uppercase; }
+  .lugar { margin-top: 3px !important; font-size: 12px; line-height: 1.35; color: var(--crema); }
+  .precio { display: flex; align-items: center; gap: 8px; margin-top: 8px !important; }
   .sticker {
-    flex: none; padding: 3px 12px 4px; border: 3px solid var(--blanco); border-radius: 12px;
+    flex: none; padding: 1px 9px 2px; border: 2.5px solid var(--blanco); border-radius: 10px;
     background: var(--rojo); color: var(--blanco);
-    font-size: 21px; font-weight: 900; line-height: 1.1;
-    box-shadow: 0 4px 0 rgb(10 18 45 / .45);
+    font-size: 16px; font-weight: 900; line-height: 1.15;
+    box-shadow: 0 3px 0 rgb(10 18 45 / .45);
   }
-  .precio small { max-width: 30ch; font-size: 11.5px; font-weight: 500; line-height: 1.3; color: var(--crema); }
+  .precio small { font-size: 10.5px; font-weight: 500; line-height: 1.3; color: var(--crema); white-space: nowrap; }
   /* logo con contorno blanco, como en las piezas */
   .logo {
-    width: 96px; height: auto;
+    width: clamp(64px, 19vw, 78px); height: auto;
     filter: drop-shadow(2px 0 0 #fff) drop-shadow(-2px 0 0 #fff) drop-shadow(0 2px 0 #fff) drop-shadow(0 -2px 0 #fff);
   }
 
@@ -131,10 +129,10 @@
   <nav class="escenario entra" style="--n:3" aria-label="Enlaces del festival"></nav>
 
   <footer class="entra" style="--n:4">
-    <p class="dia">Sábado 28 de noviembre</p>
     <div>
-      <p class="lugar">Explanada Fray Antón de Montesinos<br>Malecón de Santo Domingo</p>
-      <div class="precio"><span class="sticker" aria-label="Entrada: 9.99 dólares">US$9.99</span><small>Tu entrada en la app KFeel, o su equivalente en pesos dominicanos</small></div>
+      <p class="dia">Sábado 28 de noviembre</p>
+      <p class="lugar">Explanada Fray Antón de Montesinos,<br>Malecón de Santo Domingo</p>
+      <p class="precio"><span class="sticker" aria-label="Entrada: 9.99 dólares">US$9.99</span><small>Entrada en la app KFeel<br>o su equivalente en pesos</small></p>
     </div>
     <img class="logo" src="assets/logo.png" alt="Festival Coreano RD">
   </footer>
@@ -155,7 +153,7 @@
     return `
     <a class="item${pl?.cerrado ? ' cerrado' : ''}" href="${e.url}"${externo(e)}${i >= N ? ' aria-hidden="true" tabindex="-1"' : ''}>
       <span class="disco">${glifo(e)}</span>
-      <span class="txt"><b>${e.titulo}</b>${pl ? `<small class="plazo">${pl.texto}, el 20 de octubre</small>` : `<small>${e.detalle}</small>`}</span>
+      <span class="txt"><b>${e.titulo}</b></span>
     </a>`;
   }).join('');
 
@@ -164,13 +162,15 @@
     for (let t = 17; t > 14 && b.scrollWidth > b.clientWidth; t -= 0.5) b.style.fontSize = `${t - 0.5}px`;
   });
 
-  const R = Math.min(340, escenario.clientHeight * 0.7), GRADOS = 80 / R * 180 / Math.PI;
+  const R = Math.min(340, escenario.clientHeight * 0.7), GRADOS = 72 / R * 180 / Math.PI;
   let rueda;
   rueda = crearRueda({
     escenario,
     items: [...escenario.querySelectorAll('.item')],
     paso: R * GRADOS * Math.PI / 180,
     toqueDirecto: 2.2, // cualquier botón visible se abre con un toque
+    giro: 0,           // quieta: solo se mueve cuando la persona la arrastra
+    inicio: 0,         // sin giro de entrada
     alCuadro: vibrarAlCambiar(() => rueda, N),
     colocar(el, d) {
       const a = d * GRADOS, k = Math.abs(d);

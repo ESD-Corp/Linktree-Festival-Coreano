@@ -5,8 +5,8 @@ En línea: <https://linktree-festival-coreano.vercel.app>
 Página de enlaces para la bio de Instagram y TikTok del Festival Coreano RD
 (sábado 28 de noviembre de 2026, Explanada Fray Antón de Montesinos, Malecón de Santo Domingo).
 
-Los cinco botones giran en un tambor: el que queda en el centro se vuelve una etiqueta roja.
-Giran solos, se detienen al tocarlos y se mueven con el dedo, la rueda del mouse o las flechas del teclado.
+Los cinco botones van en un tambor: el que queda en el centro se vuelve una etiqueta roja.
+El tambor está quieto y se mueve con el dedo, la rueda del mouse o las flechas del teclado.
 La estética sigue las piezas de la campaña (marino, nubes crema, trazos rojos, olas sobre blanco).
 
 ## Archivos
@@ -30,7 +30,7 @@ Después de editar `enlaces.js` o `rueda.js`, sube el número de versión en las
 
 - Los formularios de Expositores y K-Pop dance crews todavía no tienen el link del Google Form:
   su `url` empieza por `#formulario-…`. Mientras tanto, al tocarlos aparece un aviso.
-- El botón de K-Pop muestra "Cierra en N días" hasta el 20 de octubre de 2026 y después "Convocatoria cerrada".
+- Después del 20 de octubre de 2026 el botón de K-Pop se ve atenuado (convocatoria cerrada).
 
 ## Verla en local
 
