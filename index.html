@@ -32,11 +32,10 @@
       url(assets/marino.jpg) center / cover;
   }
 
-  /* ---- adornos del cartel (nunca sobre el texto) ---- */
+  /* ---- adornos del cartel: solo junto al titular, nunca sobre el texto ni detrás de los botones ---- */
   .adorno { position: absolute; pointer-events: none; z-index: -1; }
   /* la nube grande va arriba a la derecha: a la izquierda chocaba con el «¡SÉ» en teléfonos angostos */
   .nube-1 { width: 118px; right: -38px; top: -22px; transform: scaleX(-1); }
-  .nube-2 { width: 96px; left: -30px; top: 47%; }
   .viento { left: 22px; top: 20px; display: grid; justify-items: start; gap: 7px; }
   .viento i { display: block; height: 9px; border-radius: 9px; background: #34477e; }
   .viento i:nth-child(1) { width: 74px; }
@@ -111,14 +110,12 @@
 
   @media (prefers-reduced-motion: no-preference) {
     .nube-1 { animation: flota 9s ease-in-out infinite alternate; }
-    .nube-2 { animation: flota 11s ease-in-out -4s infinite alternate; }
     @keyframes flota { to { translate: 10px 0; } }
   }
 </style>
 </head>
 <body>
   <img class="adorno nube-1" src="iconos/nube-4.svg" alt="">
-  <img class="adorno nube-2" src="iconos/nube-2.svg" alt="">
   <div class="adorno viento" aria-hidden="true"><i></i><i></i><i></i></div>
 
   <header>
