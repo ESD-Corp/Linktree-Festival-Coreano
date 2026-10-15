@@ -9,7 +9,6 @@
   --blanco: #fff;
   /* Avenir Next solo existe en Apple; Figtree es la alternativa web más cercana para Android */
   --letra: "Avenir Next", "Avenir", "Figtree", system-ui, sans-serif;
-  --hangul: "Apple SD Gothic Neo", "Noto Sans KR", sans-serif;
   --salida: cubic-bezier(0.23, 1, 0.32, 1);
 }
 
@@ -48,8 +47,6 @@ img { display: block; }
   -webkit-mask: var(--src) center / contain no-repeat;
           mask: var(--src) center / contain no-repeat;
 }
-
-.hangul { font-family: var(--hangul); color: var(--rojo); font-weight: 400; }
 
 /* Entrada en cascada (frame.md: etiqueta, línea 1, línea 2…) */
 .entra { opacity: 0; transform: translateY(10px); animation: entra 520ms var(--salida) forwards; animation-delay: calc(var(--n, 0) * 90ms + 80ms); }
