@@ -1,0 +1,66 @@
+/* Base del linktree: colores y tipografía del sistema visual del Festival Coreano RD */
+:root {
+  --rojo: #e31a26;
+  --marino: #23315b;
+  --crema: #f2dcad;
+  --papel: #f4f4f2;
+  --gris: #c9cacc;
+  --humo: #5f6882;
+  --blanco: #fff;
+  /* Avenir Next solo existe en Apple; Figtree es la alternativa web más cercana para Android */
+  --letra: "Avenir Next", "Avenir", "Figtree", system-ui, sans-serif;
+  --hangul: "Apple SD Gothic Neo", "Noto Sans KR", sans-serif;
+  --salida: cubic-bezier(0.23, 1, 0.32, 1);
+}
+
+* { box-sizing: border-box; }
+html, body { margin: 0; height: 100%; }
+body {
+  height: 100dvh;
+  overflow: hidden;
+  font-family: var(--letra);
+  -webkit-font-smoothing: antialiased;
+  -webkit-tap-highlight-color: transparent;
+  overscroll-behavior: none;
+}
+a { color: inherit; text-decoration: none; }
+img { display: block; }
+
+/* Escenario de la rueda: el degradado de opacidad arriba y abajo */
+.escenario {
+  position: relative;
+  touch-action: none;
+  user-select: none;
+  -webkit-user-select: none;
+  -webkit-mask-image: linear-gradient(to bottom, transparent 0, #000 22%, #000 78%, transparent 100%);
+          mask-image: linear-gradient(to bottom, transparent 0, #000 22%, #000 78%, transparent 100%);
+  cursor: grab;
+}
+.escenario:active { cursor: grabbing; }
+.escenario a { -webkit-user-drag: none; }
+.item { position: absolute; will-change: transform, opacity; }
+.item:focus-visible { outline: 3px solid var(--rojo); outline-offset: 4px; }
+
+/* Ícono monocromo pintado con el color del texto */
+.ico-m {
+  display: block;
+  background: currentColor;
+  -webkit-mask: var(--src) center / contain no-repeat;
+          mask: var(--src) center / contain no-repeat;
+}
+
+.hangul { font-family: var(--hangul); color: var(--rojo); font-weight: 400; }
+
+/* Entrada en cascada (frame.md: etiqueta, línea 1, línea 2…) */
+.entra { opacity: 0; transform: translateY(10px); animation: entra 520ms var(--salida) forwards; animation-delay: calc(var(--n, 0) * 90ms + 80ms); }
+@keyframes entra { to { opacity: 1; transform: none; } }
+
+.solo-lector {
+  position: absolute; width: 1px; height: 1px; overflow: hidden;
+  clip: rect(0 0 0 0); white-space: nowrap;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .entra { animation: aparece 200ms ease forwards; transform: none; }
+  @keyframes aparece { to { opacity: 1; } }
+}

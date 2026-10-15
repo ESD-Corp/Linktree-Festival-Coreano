@@ -1,0 +1,185 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Festival Coreano RD 2026</title>
+<meta name="description" content="Formularios y entrada del Festival Coreano RD, sábado 28 de noviembre de 2026 en el Malecón de Santo Domingo.">
+<link rel="icon" href="assets/logo.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;700;800;900&family=Noto+Sans+KR:wght@500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="comun.css">
+<style>
+  /* Linktree del Festival Coreano RD 2026. Los botones giran en un tambor (rueda.js)
+     con la estética de las piezas de la campaña
+     ("¡El Festival Coreano 2026 tiene entrada!", "¿Cómo acceder?", "¡Sé parte del festival!"):
+     marino con olas en relieve, nubes crema, líneas de viento, trazos rojos de impacto,
+     etiquetas rojas con borde blanco tipo sticker y la banda de olas rojas sobre blanco. */
+  body {
+    display: grid; grid-template-rows: auto 1fr auto auto;
+    position: relative; isolation: isolate;
+    background-color: var(--marino);
+    color: var(--blanco);
+  }
+  /* olas seigaiha en relieve, apenas más claras que el marino */
+  body::before {
+    content: ""; position: fixed; inset: 0; z-index: -1; pointer-events: none;
+    --o: rgb(255 255 255 / .045);
+    background:
+      radial-gradient(circle at 50% 100%, transparent 0 6px, var(--o) 6px 8px, transparent 8px 12px, var(--o) 12px 14px, transparent 14px 18px, var(--o) 18px 20px, transparent 20px) 0 0 / 40px 20px,
+      radial-gradient(circle at 50% 100%, transparent 0 6px, var(--o) 6px 8px, transparent 8px 12px, var(--o) 12px 14px, transparent 14px 18px, var(--o) 18px 20px, transparent 20px) 20px 10px / 40px 20px,
+      url(assets/marino.jpg) center / cover;
+  }
+
+  /* ---- adornos del cartel (nunca sobre el texto) ---- */
+  .adorno { position: absolute; pointer-events: none; z-index: -1; }
+  .nube-1 { width: 118px; left: -38px; top: -22px; }
+  .nube-2 { width: 96px; right: -26px; top: 47%; }
+  .viento { right: 18px; top: 18px; display: grid; justify-items: end; gap: 7px; }
+  .viento i { display: block; height: 9px; border-radius: 9px; background: #34477e; }
+  .viento i:nth-child(1) { width: 74px; }
+  .viento i:nth-child(2) { width: 104px; margin-right: 22px; }
+  .viento i:nth-child(3) { width: 46px; margin-right: 50px; }
+
+  /* trazos rojos de impacto, como en los titulares de la campaña */
+  .impacto { position: relative; display: inline-block; width: 26px; height: 30px; vertical-align: top; margin-left: 6px; }
+  .impacto i { position: absolute; left: 4px; width: 18px; height: 4px; border-radius: 4px; background: var(--rojo); transform-origin: left center; }
+  .impacto i:nth-child(1) { top: 4px; transform: rotate(-32deg); }
+  .impacto i:nth-child(2) { top: 14px; }
+  .impacto i:nth-child(3) { top: 24px; transform: rotate(32deg); }
+
+  header { padding: 66px 24px 0; } /* deja la franja de arriba para nubes y viento */
+  h1 {
+    margin: 0; text-transform: uppercase;
+    font-size: clamp(34px, 10.4vw, 42px); font-weight: 900; line-height: .94; letter-spacing: -0.02em;
+  }
+  h1 span { display: block; }
+  h1 .l2 { color: var(--rojo); }
+  header .hangul { margin: 10px 0 0; font-size: 17px; font-weight: 500; color: var(--crema); }
+
+  .escenario { perspective: 760px; margin-top: 4px; }
+  .item {
+    top: 50%; left: 50%;
+    width: min(344px, calc(100vw - 32px)); height: 64px;
+    display: grid; grid-template-columns: 46px 1fr; gap: 12px; align-items: center;
+    padding: 0 20px 0 8px;
+    border: 3px solid var(--blanco); border-radius: 18px;
+    background: var(--blanco); color: var(--marino);
+    backface-visibility: hidden;
+    transition: background-color 220ms ease, color 220ms ease, box-shadow 220ms ease;
+  }
+  .disco { width: 46px; height: 46px; border-radius: 50%; display: grid; place-items: center; background: var(--rojo); color: var(--blanco); transition: background-color 220ms ease, color 220ms ease; }
+  .disco .ico-m { width: 27px; height: 27px; }
+  .txt { min-width: 0; }
+  .txt b { display: block; font-size: 17px; font-weight: 800; line-height: 1.15; white-space: nowrap; }
+  .txt small { display: block; font-size: 13px; font-weight: 500; line-height: 1.3; color: var(--humo); transition: color 220ms ease; }
+  .txt small.plazo { color: var(--rojo); font-weight: 800; }
+  /* el del centro se vuelve sticker: rojo, borde blanco y sombra dura */
+  .item.activo { background: var(--rojo); color: var(--blanco); box-shadow: 0 6px 0 rgb(10 18 45 / .45); }
+  .item.activo .disco { background: var(--blanco); color: var(--rojo); }
+  .item.activo small, .item.activo small.plazo { color: var(--blanco); }
+  .item.cerrado { opacity: .55; }
+  .item:active { scale: 0.97; }
+  .item:focus-visible { outline-color: var(--crema); }
+
+  footer { display: grid; grid-template-columns: 1fr auto; column-gap: 14px; align-items: end; padding: 8px 20px 14px 24px; }
+  footer .dia { grid-column: 1 / -1; }
+  .dia { margin: 0; font-size: clamp(15px, 4.5vw, 18px); white-space: nowrap; font-weight: 900; line-height: 1.1; text-transform: uppercase; }
+  .lugar { margin: 4px 0 10px; font-size: 13px; line-height: 1.35; color: var(--crema); }
+  .precio { display: grid; justify-items: start; gap: 7px; }
+  .sticker {
+    flex: none; padding: 3px 12px 4px; border: 3px solid var(--blanco); border-radius: 12px;
+    background: var(--rojo); color: var(--blanco);
+    font-size: 21px; font-weight: 900; line-height: 1.1;
+    box-shadow: 0 4px 0 rgb(10 18 45 / .45);
+  }
+  .precio small { max-width: 30ch; font-size: 11.5px; font-weight: 500; line-height: 1.3; color: var(--crema); }
+  /* logo con contorno blanco, como en las piezas */
+  .logo {
+    width: 96px; height: auto;
+    filter: drop-shadow(2px 0 0 #fff) drop-shadow(-2px 0 0 #fff) drop-shadow(0 2px 0 #fff) drop-shadow(0 -2px 0 #fff);
+  }
+
+  .banda { height: 26px; background: var(--blanco) url(assets/olas_banda_superior.svg) left top / 312px 26px repeat-x; }
+
+  /* teléfonos bajitos: el titular cede espacio a la rueda */
+  @media (max-height: 700px) {
+    header { padding-top: 52px; }
+    h1 { font-size: 32px; }
+    header .hangul { margin-top: 6px; font-size: 15px; }
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    .nube-1 { animation: flota 9s ease-in-out infinite alternate; }
+    .nube-2 { animation: flota 11s ease-in-out -4s infinite alternate; }
+    @keyframes flota { to { translate: 10px 0; } }
+  }
+</style>
+</head>
+<body>
+  <img class="adorno nube-1" src="iconos/nube-4.svg" alt="">
+  <img class="adorno nube-2" src="iconos/nube-2.svg" alt="">
+  <div class="adorno viento" aria-hidden="true"><i></i><i></i><i></i></div>
+
+  <header>
+    <h1><span class="l1 entra" style="--n:0">¡Sé parte<span class="impacto" aria-hidden="true"><i></i><i></i><i></i></span></span><span class="l2 entra" style="--n:1">del festival!</span></h1>
+    <p class="hangul entra" style="--n:2" lang="ko">축제에 함께해요</p>
+  </header>
+
+  <nav class="escenario entra" style="--n:3" aria-label="Enlaces del festival"></nav>
+
+  <footer class="entra" style="--n:4">
+    <p class="dia">Sábado 28 de noviembre</p>
+    <div>
+      <p class="lugar">Explanada Fray Antón de Montesinos<br>Malecón de Santo Domingo</p>
+      <div class="precio"><span class="sticker" aria-label="Entrada: 9.99 dólares">US$9.99</span><small>Tu entrada en la app KFeel, o su equivalente en pesos dominicanos</small></div>
+    </div>
+    <img class="logo" src="assets/logo.png" alt="Festival Coreano RD">
+  </footer>
+  <div class="banda" aria-hidden="true"></div>
+
+<script type="module">
+  import { BOTONES, externo, plazo, vibrarAlCambiar, avisarPendientes } from './enlaces.js?v=1';
+  import { crearRueda } from './rueda.js?v=1';
+  avisarPendientes();
+
+  // En el cartel todos los íconos van en blanco dentro de un círculo rojo, como en "¿Cómo acceder?"
+  const glifo = e => `<span class="ico-m" style="--src:url('iconos/${e.icono}.svg')" aria-hidden="true"></span>`;
+
+  const N = BOTONES.length;
+  const escenario = document.querySelector('.escenario');
+  escenario.innerHTML = [...BOTONES, ...BOTONES].map((e, i) => {
+    const pl = plazo(e);
+    return `
+    <a class="item${pl?.cerrado ? ' cerrado' : ''}" href="${e.url}"${externo(e)}${i >= N ? ' aria-hidden="true" tabindex="-1"' : ''}>
+      <span class="disco">${glifo(e)}</span>
+      <span class="txt"><b>${e.titulo}</b>${pl ? `<small class="plazo">${pl.texto}, el 20 de octubre</small>` : `<small>${e.detalle}</small>`}</span>
+    </a>`;
+  }).join('');
+
+  await document.fonts.ready;
+  escenario.querySelectorAll('.txt b').forEach(b => {
+    for (let t = 17; t > 14 && b.scrollWidth > b.clientWidth; t -= 0.5) b.style.fontSize = `${t - 0.5}px`;
+  });
+
+  const R = Math.min(340, escenario.clientHeight * 0.7), GRADOS = 80 / R * 180 / Math.PI;
+  let rueda;
+  rueda = crearRueda({
+    escenario,
+    items: [...escenario.querySelectorAll('.item')],
+    paso: R * GRADOS * Math.PI / 180,
+    toqueDirecto: 2.2, // cualquier botón visible se abre con un toque
+    alCuadro: vibrarAlCambiar(() => rueda, N),
+    colocar(el, d) {
+      const a = d * GRADOS, k = Math.abs(d);
+      if (k > 2.7) { el.style.visibility = 'hidden'; return; }
+      const r = a * Math.PI / 180;
+      el.style.visibility = '';
+      el.style.transform = `translate(-50%, -50%) translate3d(0, ${R * Math.sin(r)}px, ${R * (Math.cos(r) - 1)}px) rotateX(${-a}deg)`;
+      el.style.opacity = Math.cos(r) ** 1.4 * Math.min(1, Math.max(0, (2.7 - k) / 0.7));
+    },
+  });
+</script>
+</body>
+</html>
