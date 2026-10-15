@@ -14,33 +14,19 @@
   /* Linktree del Festival Coreano RD 2026. Los botones giran en un tambor (rueda.js)
      con la estética de las piezas de la campaña
      ("¡El Festival Coreano 2026 tiene entrada!", "¿Cómo acceder?", "¡Sé parte del festival!"):
-     marino con olas en relieve, nubes crema, líneas de viento, trazos rojos de impacto,
-     etiquetas rojas con borde blanco tipo sticker y la banda de olas rojas sobre blanco. */
+     marino liso, una nube crema, trazos rojos de impacto
+     y etiquetas rojas con borde blanco tipo sticker. */
   body {
-    display: grid; grid-template-rows: auto 1fr auto auto;
+    display: grid; grid-template-rows: auto 1fr auto;
     position: relative; isolation: isolate;
     background-color: var(--marino);
     color: var(--blanco);
-  }
-  /* olas seigaiha en relieve, apenas más claras que el marino */
-  body::before {
-    content: ""; position: fixed; inset: 0; z-index: -1; pointer-events: none;
-    --o: rgb(255 255 255 / .045);
-    background:
-      radial-gradient(circle at 50% 100%, transparent 0 6px, var(--o) 6px 8px, transparent 8px 12px, var(--o) 12px 14px, transparent 14px 18px, var(--o) 18px 20px, transparent 20px) 0 0 / 40px 20px,
-      radial-gradient(circle at 50% 100%, transparent 0 6px, var(--o) 6px 8px, transparent 8px 12px, var(--o) 12px 14px, transparent 14px 18px, var(--o) 18px 20px, transparent 20px) 20px 10px / 40px 20px,
-      url(assets/marino.jpg) center / cover;
   }
 
   /* ---- adornos del cartel: solo junto al titular, nunca sobre el texto ni detrás de los botones ---- */
   .adorno { position: absolute; pointer-events: none; z-index: -1; }
   /* la nube grande va arriba a la derecha: a la izquierda chocaba con el «¡SÉ» en teléfonos angostos */
   .nube-1 { width: 118px; right: -38px; top: -22px; transform: scaleX(-1); }
-  .viento { left: 22px; top: 20px; display: grid; justify-items: start; gap: 7px; }
-  .viento i { display: block; height: 9px; border-radius: 9px; background: #34477e; }
-  .viento i:nth-child(1) { width: 74px; }
-  .viento i:nth-child(2) { width: 104px; margin-left: 22px; }
-  .viento i:nth-child(3) { width: 46px; margin-left: 50px; }
 
   /* trazos rojos de impacto, como en los titulares de la campaña */
   .impacto { position: relative; display: inline-block; width: 26px; height: 30px; vertical-align: top; margin-left: 6px; }
@@ -49,7 +35,7 @@
   .impacto i:nth-child(2) { top: 14px; }
   .impacto i:nth-child(3) { top: 24px; transform: rotate(32deg); }
 
-  header { padding: 66px 24px 0; } /* deja la franja de arriba para nubes y viento */
+  header { padding: 66px 24px 0; } /* deja la franja de arriba para la nube */
   h1 {
     margin: 0; text-transform: uppercase;
     font-size: clamp(34px, 10.4vw, 42px); font-weight: 900; line-height: .94; letter-spacing: -0.02em;
@@ -80,7 +66,7 @@
   .item:focus-visible { outline-color: var(--crema); }
 
   /* Datos del evento en tres líneas cortas: fecha, lugar y precio */
-  footer { display: grid; grid-template-columns: 1fr auto; column-gap: 12px; align-items: end; padding: 4px 18px 12px 24px; }
+  footer { display: grid; grid-template-columns: 1fr auto; column-gap: 12px; align-items: end; padding: 4px 18px max(20px, env(safe-area-inset-bottom)) 24px; }
   footer p { margin: 0; }
   .dia { font-size: clamp(13px, 3.9vw, 15px); white-space: nowrap; font-weight: 900; line-height: 1.15; text-transform: uppercase; }
   .lugar { margin-top: 3px !important; font-size: 12px; line-height: 1.35; color: var(--crema); }
@@ -98,7 +84,6 @@
     filter: drop-shadow(2px 0 0 #fff) drop-shadow(-2px 0 0 #fff) drop-shadow(0 2px 0 #fff) drop-shadow(0 -2px 0 #fff);
   }
 
-  .banda { height: 26px; background: var(--blanco) url(assets/olas_banda_superior.svg) left top / 312px 26px repeat-x; }
 
   /* teléfonos bajitos: el titular cede espacio a la rueda */
   @media (max-height: 700px) {
@@ -114,7 +99,6 @@
 </head>
 <body>
   <img class="adorno nube-1" src="iconos/nube-4.svg" alt="">
-  <div class="adorno viento" aria-hidden="true"><i></i><i></i><i></i></div>
 
   <header>
     <h1><span class="l1 entra" style="--n:0">¡Sé parte<span class="impacto" aria-hidden="true"><i></i><i></i><i></i></span></span><span class="l2 entra" style="--n:1">del festival!</span></h1>
@@ -126,19 +110,19 @@
     <div>
       <p class="dia">Sábado 28 de noviembre</p>
       <p class="lugar">Explanada Fray Antón de Montesinos,<br>Malecón de Santo Domingo</p>
-      <p class="precio"><span class="sticker" aria-label="Entrada: 9.99 dólares">US$9.99</span><small>Entrada en la app KFeel<br>o su equivalente en pesos</small></p>
+      <p class="precio"><span class="sticker" aria-label="Entrada: 9.99 dólares">US$9.99</span><small>Entrada en la app KFeel</small></p>
     </div>
     <img class="logo" src="assets/logo.png" alt="Festival Coreano RD">
   </footer>
-  <div class="banda" aria-hidden="true"></div>
 
 <script type="module">
-  import { BOTONES, externo, plazo, vibrarAlCambiar, avisarPendientes } from './enlaces.js?v=2';
+  import { BOTONES, externo, plazo, vibrarAlCambiar, avisarPendientes } from './enlaces.js?v=3';
   import { crearRueda } from './rueda.js?v=1';
   avisarPendientes();
 
   // En el cartel todos los íconos van en blanco dentro de un círculo rojo, como en "¿Cómo acceder?"
-  const glifo = e => `<span class="ico-m" style="--src:url('iconos/${e.icono}.svg')" aria-hidden="true"></span>`;
+  // (el puesto de expositores sale del ícono oficial de la marca, recortado como silueta en PNG)
+  const glifo = e => `<span class="ico-m" style="--src:url('iconos/${e.icono.includes('.') ? e.icono : e.icono + '.svg'}')" aria-hidden="true"></span>`;
 
   const N = BOTONES.length;
   const escenario = document.querySelector('.escenario');

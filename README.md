@@ -7,7 +7,7 @@ Página de enlaces para la bio de Instagram y TikTok del Festival Coreano RD
 
 Los cinco botones van en un tambor: el que queda en el centro se vuelve una etiqueta roja.
 El tambor está quieto y se mueve con el dedo, la rueda del mouse o las flechas del teclado.
-La estética sigue las piezas de la campaña (marino, nubes crema, trazos rojos, olas sobre blanco).
+La estética sigue las piezas de la campaña (marino liso, nube crema, trazos rojos, etiqueta roja tipo sticker).
 
 ## Archivos
 
@@ -17,8 +17,8 @@ La estética sigue las piezas de la campaña (marino, nubes crema, trazos rojos,
 | `enlaces.js` | **Los 5 botones** (texto, link e ícono) y el aviso de cierre de la convocatoria de K-Pop. |
 | `rueda.js` | El movimiento del tambor: giro automático, arrastre con inercia, rueda del mouse y teclado. |
 | `comun.css` | Colores y tipografía del sistema visual. |
-| `assets/` | Logo, textura marino y banda de olas. |
-| `iconos/` | Íconos del set del festival que usan los botones y las nubes. |
+| `assets/` | Logo. |
+| `iconos/` | Íconos de los botones y la nube (el puesto de expositores sale del ícono oficial de la marca). |
 
 ## Cambiar un enlace
 
