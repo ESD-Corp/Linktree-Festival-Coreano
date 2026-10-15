@@ -1,5 +1,7 @@
 # Linktree · Festival Coreano RD 2026
 
+En línea: <https://linktree-festival-coreano.vercel.app>
+
 Página de enlaces para la bio de Instagram y TikTok del Festival Coreano RD
 (sábado 28 de noviembre de 2026, Explanada Fray Antón de Montesinos, Malecón de Santo Domingo).
 
@@ -38,3 +40,12 @@ python3 -m http.server 8744
 
 Luego abre <http://localhost:8744>. Hace falta un servidor (no funciona abriendo el archivo directo)
 porque los scripts son módulos.
+
+## Publicar cambios
+
+El sitio está en Vercel (equipo *esd-corp's projects*, proyecto `linktree-festival-coreano`).
+Desde esta carpeta:
+
+```bash
+npx vercel deploy --prod --scope esd-corps-projects
+```
