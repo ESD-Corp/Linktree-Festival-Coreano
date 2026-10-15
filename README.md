@@ -43,9 +43,6 @@ porque los scripts son módulos.
 
 ## Publicar cambios
 
-El sitio está en Vercel (equipo *esd-corp's projects*, proyecto `linktree-festival-coreano`).
-Desde esta carpeta:
-
-```bash
-npx vercel deploy --prod --scope esd-corps-projects
-```
+El sitio está en Vercel (equipo *esd-corp's projects*, proyecto `linktree-festival-coreano`), conectado a este repo:
+cada cambio que se sube a la rama `main` se publica solo en <https://linktree-festival-coreano.vercel.app>
+en unos segundos. Los cambios en otras ramas generan una vista previa aparte, sin tocar el sitio principal.
