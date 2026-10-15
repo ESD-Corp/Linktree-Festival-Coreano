@@ -34,13 +34,14 @@
 
   /* ---- adornos del cartel (nunca sobre el texto) ---- */
   .adorno { position: absolute; pointer-events: none; z-index: -1; }
-  .nube-1 { width: 118px; left: -38px; top: -22px; }
-  .nube-2 { width: 96px; right: -26px; top: 47%; }
-  .viento { right: 18px; top: 18px; display: grid; justify-items: end; gap: 7px; }
+  /* la nube grande va arriba a la derecha: a la izquierda chocaba con el «¡SÉ» en teléfonos angostos */
+  .nube-1 { width: 118px; right: -38px; top: -22px; transform: scaleX(-1); }
+  .nube-2 { width: 96px; left: -30px; top: 47%; }
+  .viento { left: 22px; top: 20px; display: grid; justify-items: start; gap: 7px; }
   .viento i { display: block; height: 9px; border-radius: 9px; background: #34477e; }
   .viento i:nth-child(1) { width: 74px; }
-  .viento i:nth-child(2) { width: 104px; margin-right: 22px; }
-  .viento i:nth-child(3) { width: 46px; margin-right: 50px; }
+  .viento i:nth-child(2) { width: 104px; margin-left: 22px; }
+  .viento i:nth-child(3) { width: 46px; margin-left: 50px; }
 
   /* trazos rojos de impacto, como en los titulares de la campaña */
   .impacto { position: relative; display: inline-block; width: 26px; height: 30px; vertical-align: top; margin-left: 6px; }
