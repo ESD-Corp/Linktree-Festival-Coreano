@@ -1,0 +1,77 @@
+# Publica el sitio en el servidor de producción cada vez que se sube algo a la rama produccion.
+# Para volver atrás: revertir el commit en produccion y subirlo.
+name: Deploy a producción
+
+on:
+  push:
+    branches: [produccion]
+  workflow_dispatch:
+
+concurrency:
+  group: deploy-produccion
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+
+      # Abre el sitio en un navegador real antes de subirlo. Si hay errores de JavaScript, archivos que faltan
+      # o la página no muestra enlaces, el deploy se detiene aquí y no se toca el servidor.
+      # Las herramientas se instalan fuera de la carpeta del sitio para que no se suban.
+      - name: Probar el sitio antes de subirlo
+        run: |
+          cd "$RUNNER_TEMP"
+          npm install --no-save --no-package-lock --silent playwright@1.49.1
+          npx playwright install --with-deps chromium
+          python3 -m http.server 8744 --directory "$GITHUB_WORKSPACE" &>/dev/null &
+          curl -fsS --retry 10 --retry-connrefused --retry-delay 1 -o /dev/null http://localhost:8744/
+          cat > prueba.mjs <<'EOF'
+          import { chromium } from 'playwright';
+          const base = 'http://localhost:8744/';
+          const problemas = [];
+          const navegador = await chromium.launch();
+          const pagina = await navegador.newPage({ viewport: { width: 390, height: 844 } });
+          pagina.on('pageerror', e => problemas.push(`Error de JavaScript: ${e.message}`));
+          pagina.on('console', m => {
+            if (m.type() === 'error' && !m.text().startsWith('Failed to load resource')) problemas.push(`Error en la consola: ${m.text()}`);
+          });
+          pagina.on('response', r => {
+            if (r.url().startsWith(base) && r.status() >= 400) problemas.push(`Falta el archivo /${r.url().slice(base.length)} (${r.status()})`);
+          });
+          pagina.on('requestfailed', r => { if (r.url().startsWith(base)) problemas.push(`No cargó /${r.url().slice(base.length)}`); });
+          await pagina.goto(base, { waitUntil: 'networkidle' });
+          await pagina.waitForTimeout(1500);
+          const enlaces = await pagina.locator('a[href]:visible').count();
+          if (!enlaces) problemas.push('La página no muestra ningún enlace');
+          await navegador.close();
+          if (problemas.length) {
+            console.log('El sitio tiene problemas, no se sube a producción:\n- ' + [...new Set(problemas)].join('\n- '));
+            process.exit(1);
+          }
+          console.log(`Sitio OK: ${enlaces} enlaces visibles y sin errores.`);
+          EOF
+          node prueba.mjs
+
+      - name: Llave SSH y huella del servidor
+        env:
+          LLAVE: ${{ secrets.SERVIDOR_LLAVE_SSH }}
+          HUELLA: ${{ secrets.SERVIDOR_HUELLA }}
+        run: |
+          install -d -m 700 ~/.ssh
+          printf '%s\n' "$LLAVE" > ~/.ssh/id_ed25519 && chmod 600 ~/.ssh/id_ed25519
+          printf '%s\n' "$HUELLA" > ~/.ssh/known_hosts
+
+      # --delay-updates y --delete-after: todo se sube a temporales y se reemplaza de golpe al final;
+      # si la subida falla a mitad, el sitio queda como estaba
+      - name: Subir el sitio
+        run: |
+          rsync -rlz --delete-after --delay-updates --chmod=D755,F644 \
+            --exclude=.git/ --exclude=.github/ --exclude=.gitignore --exclude=README.md --exclude=.DS_Store \
+            ./ "deploy@${{ secrets.SERVIDOR_IP }}:/var/www/linktree/"
+
+      # Si el sitio no responde, el deploy sale en rojo y GitHub le avisa a quien hizo el push
+      - name: Comprobar que responde
+        run: curl -fsS --retry 3 --retry-delay 5 -o /dev/null "https://${{ vars.DOMINIO_PRODUCCION }}/"
