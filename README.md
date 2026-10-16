@@ -26,11 +26,11 @@ Edita `enlaces.js`. Cada botón tiene `titulo`, `detalle`, `url` e `icono`.
 Después de editar `enlaces.js` o `rueda.js`, sube el número de versión en las dos líneas `import` de
 `index.html` (`?v=1` → `?v=2`) para que los navegadores no usen la copia vieja guardada.
 
-## Pendiente
+## Formularios
 
-- El formulario de K-Pop dance crews todavía no tiene el link del Google Form:
-  su `url` empieza por `#formulario-…`. Mientras tanto, al tocarlos aparece un aviso.
-- Después del 20 de octubre de 2026 el botón de K-Pop se ve atenuado (convocatoria cerrada).
+Los cinco botones tienen su link. Si alguno se deja sin link (con una `url` que empiece por `#formulario-…`),
+al tocarlo aparece un aviso de que falta el formulario. Después del 20 de octubre de 2026 el botón de
+K-Pop se ve atenuado (convocatoria cerrada).
 
 ## Verla en local
 
