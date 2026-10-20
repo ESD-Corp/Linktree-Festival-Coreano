@@ -18,11 +18,12 @@ export function crearRueda({
   toqueDirecto = Infinity, // |d| máximo para abrir con un toque; más lejos, el toque lo trae al centro
   sentido = () => 1,  // permite invertir el arrastre según dónde empieza (órbita)
   respuesta = 0.45,   // s, como la "response" de los muelles de Apple
-  inicio = -2.5,      // desde dónde arranca el giro de entrada
+  inicio = -2.5,      // desde dónde arranca el giro de entrada (relativo al botón inicial)
+  centro = 0,         // índice del botón que queda en el centro al cargar
 }) {
   const N = items.length;
   const envolver = x => (((x + N / 2) % N) + N) % N - N / 2;
-  let p = reducir.matches ? 0 : inicio, v = 0, objetivo = 0, modo = 'quieto';
+  let p = reducir.matches ? centro : centro + inicio, v = 0, objetivo = centro, modo = 'quieto';
   let raf = 0, ultimo = 0, reanudar = 0, ruedaT = 0;
   let encima = false, enfocado = false, arrastre = null, arrastro = false;
 
@@ -161,7 +162,7 @@ export function crearRueda({
 
   // ---- Entrada: un giro corto que enseña que la rueda se mueve ----
   pintar();
-  if (!reducir.matches) setTimeout(() => irA(0, 0), 420);
+  if (!reducir.matches) setTimeout(() => irA(centro, 0), 420);
   else programarReanudar();
 
   return { irA, destinoDe, get p() { return p; }, get modo() { return modo; } };

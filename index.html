@@ -117,7 +117,7 @@
 
 <script type="module">
   import { BOTONES, externo, plazo, vibrarAlCambiar, avisarPendientes } from './enlaces.js?v=5';
-  import { crearRueda } from './rueda.js?v=1';
+  import { crearRueda } from './rueda.js?v=2';
   avisarPendientes();
 
   // En el cartel todos los íconos van en blanco dentro de un círculo rojo, como en "¿Cómo acceder?"
@@ -149,6 +149,8 @@
     toqueDirecto: 2.2, // cualquier botón visible se abre con un toque
     giro: 0,           // quieta: solo se mueve cuando la persona la arrastra
     inicio: 0,         // sin giro de entrada
+    // al cargar, el botón seleccionado es «KFeel Google Play»
+    centro: BOTONES.findIndex(e => e.titulo === 'KFeel Google Play'),
     alCuadro: vibrarAlCambiar(() => rueda, N),
     colocar(el, d) {
       const a = d * GRADOS, k = Math.abs(d);
