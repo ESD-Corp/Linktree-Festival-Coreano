@@ -171,6 +171,20 @@
       el.style.opacity = Math.cos(r) ** 1.4 * Math.min(1, Math.max(0, (2.7 - k) / 0.7));
     },
   });
+
+  // Google Analytics: un evento «clic_boton» cada vez que un toque abre un enlace.
+  // Va en fase de burbuja: si la rueda canceló el toque (fue un arrastre), defaultPrevented ya es true y no se cuenta.
+  escenario.addEventListener('click', e => {
+    const a = e.target.closest('.item');
+    if (!a || e.defaultPrevented || typeof gtag !== 'function') return;
+    const href = a.getAttribute('href');
+    if (!href || href.startsWith('#')) return;
+    gtag('event', 'clic_boton', {
+      boton: a.querySelector('b').textContent,
+      destino: href,
+      transport_type: 'beacon',
+    });
+  });
 </script>
 </body>
 </html>

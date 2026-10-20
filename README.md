@@ -32,6 +32,13 @@ Los cinco botones tienen su link. Si alguno se deja sin link (con una `url` que 
 al tocarlo aparece un aviso de que falta el formulario. Después del 20 de octubre de 2026 el botón de
 K-Pop se ve atenuado (convocatoria cerrada).
 
+## Google Analytics
+
+La página usa la propiedad `G-Q073ND6GGD`. Cada vez que un toque abre un botón se envía el evento
+`clic_boton` con los parámetros `boton` (el texto del botón) y `destino` (el link). Arrastrar la rueda no
+cuenta. Para verlo por botón en los informes, registra en Analytics una dimensión personalizada de ámbito
+Evento con el parámetro `boton`.
+
 ## Verla en local
 
 ```bash
