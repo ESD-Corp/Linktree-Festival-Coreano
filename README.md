@@ -18,7 +18,7 @@ La estética sigue las piezas de la campaña (marino liso, nube crema, trazos ro
 | `rueda.js` | El movimiento del tambor: giro automático, arrastre con inercia, rueda del mouse y teclado. |
 | `comun.css` | Colores y tipografía del sistema visual. |
 | `assets/` | Logo. |
-| `iconos/` | Íconos de los botones y la nube (el puesto de expositores sale del ícono oficial de la marca). |
+| `iconos/` | Íconos de los botones y la nube. El puesto de expositores sale del ícono oficial de la marca; los logos de Apple y Android, de Simple Icons. |
 
 ## Cambiar un enlace
 

@@ -126,7 +126,7 @@
   </footer>
 
 <script type="module">
-  import { BOTONES, externo, plazo, vibrarAlCambiar, avisarPendientes } from './enlaces.js?v=5';
+  import { BOTONES, externo, plazo, vibrarAlCambiar, avisarPendientes } from './enlaces.js?v=6';
   import { crearRueda } from './rueda.js?v=2';
   avisarPendientes();
 
@@ -159,8 +159,8 @@
     toqueDirecto: 2.2, // cualquier botón visible se abre con un toque
     giro: 0,           // quieta: solo se mueve cuando la persona la arrastra
     inicio: 0,         // sin giro de entrada
-    // al cargar, el botón seleccionado es «KFeel Google Play»
-    centro: BOTONES.findIndex(e => e.titulo === 'KFeel Google Play'),
+    // al cargar, el botón seleccionado es el de KFeel para Android (se busca por el link, no por el nombre)
+    centro: BOTONES.findIndex(e => e.url.includes('play.google.com')),
     alCuadro: vibrarAlCambiar(() => rueda, N),
     colocar(el, d) {
       const a = d * GRADOS, k = Math.abs(d);

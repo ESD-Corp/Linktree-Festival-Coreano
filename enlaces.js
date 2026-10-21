@@ -3,8 +3,8 @@ export const BOTONES = [
   { titulo: 'Formulario Expositores', detalle: 'Registro para tener un puesto', url: 'https://docs.google.com/forms/d/e/1FAIpQLSeBt7U1_kzhP4jhPNDD34wx-xxohwMS4JyMyS2vKqWPGKdEZA/viewform', icono: 'puesto.png' },
   { titulo: 'Formulario Voluntarios', detalle: 'Logística, prensa o atención', url: 'https://docs.google.com/forms/d/e/1FAIpQLScb_STZoVUkmY5LVGDxjxt8ojrgZl0zchC12yaxvfW9-xwvDw/viewform', icono: 'hand-heart' },
   { titulo: 'Formulario K-Pop dance crews', detalle: 'Videos hasta el 20 de octubre', url: 'https://docs.google.com/forms/d/e/1FAIpQLSenH1oB6EPAzSZaOwbWKwLs5yh4_4wBGweBWPvAqOtrShM6Ig/viewform', icono: 'microphone', cierra: '2026-10-20' },
-  { titulo: 'KFeel App Store', detalle: 'Tu entrada al festival, para iPhone', url: 'https://apps.apple.com/do/app/kfeel/id6810140328', icono: 'love-kpop' },
-  { titulo: 'KFeel Google Play', detalle: 'Tu entrada al festival, para Android', url: 'https://play.google.com/store/apps/details?id=app.kfeel', icono: 'love-kpop' },
+  { titulo: 'KFeel en iPhone', detalle: 'Tu entrada al festival, en la App Store', url: 'https://apps.apple.com/do/app/kfeel/id6810140328', icono: 'apple' },
+  { titulo: 'KFeel Android', detalle: 'Tu entrada al festival, en Google Play', url: 'https://play.google.com/store/apps/details?id=app.kfeel', icono: 'android' },
 ];
 
 export function externo(e) {
