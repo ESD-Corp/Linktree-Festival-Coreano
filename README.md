@@ -39,6 +39,16 @@ La página usa la propiedad `G-Q073ND6GGD`. Cada vez que un toque abre un botón
 cuenta. Para verlo por botón en los informes, registra en Analytics una dimensión personalizada de ámbito
 Evento con el parámetro `boton`.
 
+## Píxel de Meta
+
+Píxel «Pixel Festival Coreano» (`1114796387611197`, portafolio ESD Corp). Envía `PageView` al cargar y, en
+cada toque que abre un botón:
+
+| Botón | Evento estándar | Evento propio |
+|---|---|---|
+| Formularios (Expositores, Voluntarios, K-Pop) | `Lead` | `ClicBoton` con `boton` y `destino` |
+| KFeel en iPhone / KFeel Android | `InitiateCheckout` (ahí se compra la entrada) | `ClicBoton` con `boton` y `destino` |
+
 ## Verla en local
 
 ```bash

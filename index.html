@@ -12,6 +12,20 @@
 
   gtag('config', 'G-Q073ND6GGD');
 </script>
+<!-- Meta Pixel Code -->
+<script>
+!function(f,b,e,v,n,t,s)
+{if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+n.queue=[];t=b.createElement(e);t.async=!0;
+t.src=v;s=b.getElementsByTagName(e)[0];
+s.parentNode.insertBefore(t,s)}(window, document,'script',
+'https://connect.facebook.net/en_US/fbevents.js');
+fbq('init', '1114796387611197');
+fbq('track', 'PageView');
+</script>
+<!-- End Meta Pixel Code -->
 <title>Festival Coreano RD 2026</title>
 <meta name="description" content="Formularios y entrada del Festival Coreano RD, sábado 28 de noviembre de 2026 en el Malecón de Santo Domingo.">
 <link rel="icon" href="assets/logo.png">
@@ -108,6 +122,9 @@
 </style>
 </head>
 <body>
+<noscript><img height="1" width="1" style="display:none" alt=""
+src="https://www.facebook.com/tr?id=1114796387611197&ev=PageView&noscript=1"
+/></noscript>
   <img class="adorno nube-1" src="iconos/nube-4.svg" alt="">
 
   <header>
@@ -172,18 +189,29 @@
     },
   });
 
-  // Google Analytics: un evento «clic_boton» cada vez que un toque abre un enlace.
+  // Cada toque que abre un enlace se mide en Google Analytics y en el píxel de Meta.
   // Va en fase de burbuja: si la rueda canceló el toque (fue un arrastre), defaultPrevented ya es true y no se cuenta.
   escenario.addEventListener('click', e => {
     const a = e.target.closest('.item');
-    if (!a || e.defaultPrevented || typeof gtag !== 'function') return;
+    if (!a || e.defaultPrevented) return;
     const href = a.getAttribute('href');
     if (!href || href.startsWith('#')) return;
-    gtag('event', 'clic_boton', {
-      boton: a.querySelector('b').textContent,
-      destino: href,
-      transport_type: 'beacon',
-    });
+    const boton = a.querySelector('b').textContent;
+
+    if (typeof gtag === 'function') {
+      gtag('event', 'clic_boton', { boton, destino: href, transport_type: 'beacon' });
+    }
+
+    if (typeof fbq === 'function') {
+      // Evento estándar, para que los anuncios puedan optimizar hacia él:
+      // los formularios cuentan como Lead; los botones de KFeel (donde se compra la entrada) como InitiateCheckout
+      const esApp = /apps\.apple\.com|play\.google\.com/.test(href);
+      const esFormulario = /docs\.google\.com\/forms/.test(href);
+      if (esApp) fbq('track', 'InitiateCheckout', { content_name: boton, content_category: 'Entrada en KFeel' });
+      else if (esFormulario) fbq('track', 'Lead', { content_name: boton, content_category: 'Formulario' });
+      // Evento propio con el nombre de cada botón, igual que en Analytics
+      fbq('trackCustom', 'ClicBoton', { boton, destino: href });
+    }
   });
 </script>
 </body>
