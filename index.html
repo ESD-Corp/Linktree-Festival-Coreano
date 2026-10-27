@@ -10,7 +10,20 @@
   function gtag(){dataLayer.push(arguments);}
   gtag('js', new Date());
 
-  gtag('config', 'G-Q073ND6GGD');
+  // Las apps abren el sitio en su propio navegador y no siempre dicen de dónde viene la visita
+  // (TikTok nunca lo dice). Si el enlace no trae utm_source, se reconoce la app por su navegador
+  // y se le pasa a Analytics como fuente; si no, Analytics la cuenta como directa.
+  (function () {
+    var q = new URLSearchParams(location.search), ua = navigator.userAgent, app = '';
+    if (!q.get('utm_source')) {
+      if (/musical_ly|trill_|Bytedance|TikTok/i.test(ua)) app = 'tiktok';
+      else if (/Instagram/.test(ua)) app = 'instagram';
+      else if (/FBAN|FBAV|FB_IAB/.test(ua)) app = 'facebook';
+    }
+    if (!app) return gtag('config', 'G-Q073ND6GGD');
+    q.set('utm_source', app); q.set('utm_medium', 'app');
+    gtag('config', 'G-Q073ND6GGD', { page_location: location.origin + location.pathname + '?' + q + location.hash });
+  })();
 </script>
 <!-- Meta Pixel Code -->
 <script>
@@ -126,7 +139,7 @@ src="https://www.facebook.com/tr?id=1114796387611197&ev=PageView&noscript=1"
 
 
 <script type="module">
-  import { BOTONES, TIENDAS, externo, plazo, vibrarAlCambiar, avisarPendientes, redDeOrigen, enlaceTienda } from './enlaces.js?v=9';
+  import { BOTONES, TIENDAS, externo, plazo, vibrarAlCambiar, avisarPendientes, redDeOrigen, enlaceTienda } from './enlaces.js?v=10';
   import { crearRueda } from './rueda.js?v=2';
   avisarPendientes();
 

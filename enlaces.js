@@ -18,14 +18,22 @@ export const TIENDAS = [
 // así que mientras esté vacío el enlace de iPhone no se toca.
 export const APPLE_PT = '';
 
-// De qué red llega la visita: la etiqueta utm_source del enlace (Instagram agrega «ig» a los enlaces de la bio)
-// o, si no hay, la página de donde viene. Se guarda para toda la visita.
+// De qué red llega la visita: la etiqueta utm_source del enlace (Instagram agrega «ig» a los enlaces de la bio),
+// si no, la app que abrió el sitio (TikTok no manda la página de origen, ni siquiera desde un mensaje)
+// y, por último, la página de donde viene. Se guarda para toda la visita.
+export function appDelNavegador(ua = navigator.userAgent) {
+  if (/musical_ly|trill_|Bytedance|TikTok/i.test(ua)) return 'tiktok';
+  if (/Instagram/.test(ua)) return 'instagram';
+  if (/FBAN|FBAV|FB_IAB/.test(ua)) return 'facebook';
+  return '';
+}
+
 export function redDeOrigen() {
   try { const g = sessionStorage.getItem('red_origen'); if (g) return g; } catch {}
   const utm = new URLSearchParams(location.search).get('utm_source') || '';
   let ref = '';
   try { const u = new URL(document.referrer); if (u.hostname !== location.hostname) ref = u.hostname; } catch {}
-  const f = (utm || ref).toLowerCase();
+  const f = (utm || appDelNavegador() || ref).toLowerCase();
   const red = !f ? 'directo' : /instagram|^ig$/.test(f) ? 'instagram' : /tiktok/.test(f) ? 'tiktok' : /facebook|^fb$|^meta$/.test(f) ? 'facebook' : 'otros';
   try { sessionStorage.setItem('red_origen', red); } catch {}
   return red;
