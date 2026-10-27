@@ -34,9 +34,18 @@
       try { sessionStorage.setItem('red_origen', red); } catch (e) {}
     }
     gtag('set', { red_origen: red });
-    if (!app) return gtag('config', 'G-Q073ND6GGD');
-    q.set('utm_source', app); q.set('utm_medium', 'app');
-    gtag('config', 'G-Q073ND6GGD', { page_location: location.origin + location.pathname + '?' + q + location.hash });
+    if (app) {
+      q.set('utm_source', app); q.set('utm_medium', 'app');
+      gtag('config', 'G-Q073ND6GGD', { page_location: location.origin + location.pathname + '?' + q + location.hash });
+    } else gtag('config', 'G-Q073ND6GGD');
+    // Una vez por visita, un evento con la red en el nombre (llegada_tiktok, llegada_instagram…):
+    // el tiempo real de Analytics muestra los nombres de eventos al instante, pero no la fuente de la visita.
+    var enviada = '';
+    try { enviada = sessionStorage.getItem('llegada_enviada') || ''; } catch (e) {}
+    if (enviada !== red) {
+      gtag('event', 'llegada_' + red.replace(/-/g, '_'));
+      try { sessionStorage.setItem('llegada_enviada', red); } catch (e) {}
+    }
   })();
 </script>
 <!-- Meta Pixel Code -->

@@ -81,6 +81,8 @@ Para un lugar nuevo, copia una carpeta y cambia `data-fuente`, `data-medio` y la
 
 El sitio manda además `red_origen` en todos sus eventos de Analytics, con la red detectada (de la etiqueta, del navegador
 de la app o de la página de origen). Las tiendas mandan `kfeel_iphone` y `kfeel_android`.
+Al llegar, cada visita manda una vez `llegada_<red>` (`llegada_tiktok`, `llegada_instagram`…): sirve para ver en el tiempo real
+de Analytics, al instante, de dónde vino alguien, porque ahí no aparece la fuente de la visita.
 
 ## Publicar cambios
 
