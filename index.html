@@ -13,13 +13,27 @@
   // Las apps abren el sitio en su propio navegador y no siempre dicen de dónde viene la visita
   // (TikTok nunca lo dice). Si el enlace no trae utm_source, se reconoce la app por su navegador
   // y se le pasa a Analytics como fuente; si no, Analytics la cuenta como directa.
+  // La red que se detecta (red_origen) viaja en todos los eventos de la visita, también en page_view,
+  // y se guarda para que los botones y el enlace a Google Play usen la misma.
   (function () {
-    var q = new URLSearchParams(location.search), ua = navigator.userAgent, app = '';
-    if (!q.get('utm_source')) {
+    var q = new URLSearchParams(location.search), ua = navigator.userAgent, app = '', red = '';
+    var utm = (q.get('utm_source') || '').toLowerCase();
+    if (!utm) {
       if (/musical_ly|trill_|Bytedance|TikTok/i.test(ua)) app = 'tiktok';
       else if (/Instagram/.test(ua)) app = 'instagram';
       else if (/FBAN|FBAV|FB_IAB/.test(ua)) app = 'facebook';
     }
+    // Un enlace con etiqueta manda; si no, se mantiene la red con la que empezó la visita.
+    if (!utm) try { red = sessionStorage.getItem('red_origen') || ''; } catch (e) {}
+    if (!red) {
+      var ref = '';
+      try { var u = new URL(document.referrer); if (u.hostname !== location.hostname) ref = u.hostname.toLowerCase(); } catch (e) {}
+      var f = utm || app || ref;
+      red = !f ? 'directo' : /instagram|^ig$/.test(f) ? 'instagram' : /tiktok/.test(f) ? 'tiktok'
+        : /facebook|^fb$|^meta$/.test(f) ? 'facebook' : utm ? utm.replace(/[^a-z0-9_-]/g, '').slice(0, 30) || 'otros' : 'otros';
+      try { sessionStorage.setItem('red_origen', red); } catch (e) {}
+    }
+    gtag('set', { red_origen: red });
     if (!app) return gtag('config', 'G-Q073ND6GGD');
     q.set('utm_source', app); q.set('utm_medium', 'app');
     gtag('config', 'G-Q073ND6GGD', { page_location: location.origin + location.pathname + '?' + q + location.hash });

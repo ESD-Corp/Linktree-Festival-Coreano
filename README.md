@@ -59,6 +59,29 @@ python3 -m http.server 8744
 Luego abre <http://localhost:8744>. Hace falta un servidor (no funciona abriendo el archivo directo)
 porque los scripts son módulos.
 
+## Enlaces cortos por lugar
+
+Cada lugar donde se publica el sitio tiene su enlace. Redirige a la página principal con la fuente y el medio
+marcados (`utm_source`, `utm_medium`, `utm_campaign=kfestrd2026`), así Analytics sabe de dónde vino la visita
+aunque la app no lo diga (TikTok nunca lo dice).
+
+| Enlace | Para | Fuente / medio |
+|---|---|---|
+| `festivalcoreanord.com.do/ig` | Bio de Instagram | instagram / bio |
+| `/ig-historias` | Historias de Instagram | instagram / historias |
+| `/ig-ads` | Anuncios en Instagram | instagram / ads |
+| `/tt` | TikTok: mensajes, videos, comentarios y bio | tiktok / social |
+| `/tt-ads` | Anuncios en TikTok | tiktok / ads |
+| `/fb` | Facebook | facebook / social |
+| `/wa` | WhatsApp | whatsapp / mensaje |
+| `/qr` | Códigos QR en piezas impresas | qr / impreso |
+
+Para distinguir publicaciones, agrega `?v=` con un nombre corto: `/tt?v=reel-audicion` llega como `utm_content=reel-audicion`.
+Para un lugar nuevo, copia una carpeta y cambia `data-fuente`, `data-medio` y la dirección del `meta refresh`.
+
+El sitio manda además `red_origen` en todos sus eventos de Analytics, con la red detectada (de la etiqueta, del navegador
+de la app o de la página de origen). Las tiendas mandan `kfeel_iphone` y `kfeel_android`.
+
 ## Publicar cambios
 
 El sitio está en Vercel (equipo *esd-corp's projects*, proyecto `linktree-festival-coreano`), conectado a este repo:
