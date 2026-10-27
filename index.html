@@ -36,89 +36,76 @@ fbq('track', 'PageView');
 <link href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;700;800;900&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="comun.css">
 <style>
-  /* Linktree del Festival Coreano RD 2026. Los botones giran en un tambor (rueda.js)
-     con la estética de las piezas de la campaña
-     ("¡El Festival Coreano 2026 tiene entrada!", "¿Cómo acceder?", "¡Sé parte del festival!"):
-     marino liso, una nube crema, trazos rojos de impacto
-     y etiquetas rojas con borde blanco tipo sticker. */
-  body {
-    display: grid; grid-template-rows: auto 1fr auto;
-    position: relative; isolation: isolate;
-    background-color: var(--marino);
-    color: var(--blanco);
-  }
-
-  /* ---- adornos del cartel: solo junto al titular, nunca sobre el texto ni detrás de los botones ---- */
-  .adorno { position: absolute; pointer-events: none; z-index: -1; }
-  /* la nube grande va arriba a la derecha: a la izquierda chocaba con el «¡SÉ» en teléfonos angostos */
-  .nube-1 { width: 118px; right: -38px; top: -22px; transform: scaleX(-1); }
-
-  /* trazos rojos de impacto, como en los titulares de la campaña */
+  /* Linktree del Festival Coreano RD 2026 · versión E1 «Cartel compacto».
+     Marino liso, logo con contorno blanco arriba a la derecha, trazos rojos de impacto y stickers rojos con borde blanco. */
+  body { display: grid; position: relative; isolation: isolate; background-color: var(--marino); color: var(--blanco); }
   .impacto { position: relative; display: inline-block; width: 26px; height: 30px; vertical-align: top; margin-left: 6px; }
   .impacto i { position: absolute; left: 4px; width: 18px; height: 4px; border-radius: 4px; background: var(--rojo); transform-origin: left center; }
   .impacto i:nth-child(1) { top: 4px; transform: rotate(-32deg); }
   .impacto i:nth-child(2) { top: 14px; }
   .impacto i:nth-child(3) { top: 24px; transform: rotate(32deg); }
-
-  header { padding: 66px 24px 0; } /* deja la franja de arriba para la nube */
-  h1 {
-    margin: 0; text-transform: uppercase;
-    font-size: clamp(34px, 10.4vw, 42px); font-weight: 900; line-height: .94; letter-spacing: -0.02em;
-  }
+  header { position: relative; padding: 86px 24px 0; }
+  h1 { margin: 0; text-transform: uppercase; font-size: clamp(30px, 9vw, 36px); font-weight: 900; line-height: .94; letter-spacing: -0.02em; }
   h1 span { display: block; }
   h1 .l2 { color: var(--rojo); }
+  .logo { position: absolute; top: 14px; right: 18px; width: 84px; height: auto;
+    filter: drop-shadow(2px 0 0 #fff) drop-shadow(-2px 0 0 #fff) drop-shadow(0 2px 0 #fff) drop-shadow(0 -2px 0 #fff); }
 
-  .escenario { perspective: 760px; margin-top: 4px; }
-  .item {
-    top: 50%; left: 50%;
-    width: min(344px, calc(100vw - 32px)); height: 56px;
-    display: grid; grid-template-columns: 40px 1fr; gap: 12px; align-items: center;
-    padding: 0 20px 0 6px;
-    border: 3px solid var(--blanco); border-radius: 18px;
-    background: var(--blanco); color: var(--marino);
-    backface-visibility: hidden;
-    transition: background-color 220ms ease, color 220ms ease, box-shadow 220ms ease;
-  }
+  /* la rueda ocupa el alto que sobra: no quedan huecos muertos */
+  .escenario { perspective: 760px; min-height: 0; }
+  .item { top: 50%; left: 50%; width: min(344px, calc(100vw - 32px)); height: 56px;
+    display: flex; justify-content: center; gap: 12px; align-items: center; padding: 0 14px; /* ícono y texto centrados juntos en el botón */
+    border: 3px solid var(--blanco); border-radius: 18px; background: var(--blanco); color: var(--marino);
+    backface-visibility: hidden; transition: background-color 220ms ease, color 220ms ease, box-shadow 220ms ease; }
   .disco { width: 40px; height: 40px; border-radius: 50%; display: grid; place-items: center; background: var(--rojo); color: var(--blanco); transition: background-color 220ms ease, color 220ms ease; }
   .disco .ico-m { width: 24px; height: 24px; }
   .txt { min-width: 0; }
+  .item .disco { flex: none; }
+  .item .txt { flex: 0 1 auto; }
   .txt b { display: block; font-size: 17px; font-weight: 800; line-height: 1.15; white-space: nowrap; }
-  /* el del centro se vuelve sticker: rojo, borde blanco y sombra dura */
   .item.activo { background: var(--rojo); color: var(--blanco); box-shadow: 0 6px 0 rgb(10 18 45 / .45); }
   .item.activo .disco { background: var(--blanco); color: var(--rojo); }
   .item.cerrado { opacity: .55; }
   .item:active { scale: 0.97; }
   .item:focus-visible { outline-color: var(--crema); }
 
-  /* Datos del evento en tres líneas cortas: fecha, lugar y precio */
-  footer { display: grid; grid-template-columns: 1fr auto; column-gap: 12px; align-items: end; padding: 4px 18px max(20px, env(safe-area-inset-bottom)) 24px; }
-  footer p { margin: 0; }
-  .dia { font-size: clamp(13px, 3.9vw, 15px); white-space: nowrap; font-weight: 900; line-height: 1.15; text-transform: uppercase; }
-  .lugar { margin-top: 3px !important; font-size: 12px; line-height: 1.35; color: var(--crema); }
-  .precio { display: flex; align-items: center; gap: 8px; margin-top: 8px !important; }
-  .sticker {
-    flex: none; padding: 1px 9px 2px; border: 2.5px solid var(--blanco); border-radius: 10px;
-    background: var(--rojo); color: var(--blanco);
-    font-size: 16px; font-weight: 900; line-height: 1.15;
-    box-shadow: 0 3px 0 rgb(10 18 45 / .45);
-  }
-  .precio small { font-size: 10.5px; font-weight: 500; line-height: 1.3; color: var(--crema); white-space: nowrap; }
-  /* logo con contorno blanco, como en las piezas */
-  .logo {
-    width: clamp(64px, 19vw, 78px); height: auto;
-    filter: drop-shadow(2px 0 0 #fff) drop-shadow(-2px 0 0 #fff) drop-shadow(0 2px 0 #fff) drop-shadow(0 -2px 0 #fff);
-  }
+  /* insignias de tienda, negras como las oficiales */
+  .insignias { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  .tienda { display: flex; align-items: center; justify-content: center; gap: 8px; height: 52px; padding: 0 10px; border-radius: 11px;
+    background: #000; border: 1.5px solid #a6a6a6; color: #fff;
+    font-family: -apple-system, "SF Pro Text", "Helvetica Neue", Roboto, system-ui, sans-serif; transition: scale 140ms ease-out; }
+  .tienda .ico-m { flex: none; width: 26px; height: 26px; }
+  .tienda span.txt { min-width: 0; line-height: 1.05; }
+  .tienda small { display: block; font-size: 10px; font-weight: 500; letter-spacing: .01em; white-space: nowrap; }
+  .tienda b { display: block; font-size: clamp(15px, 4.6vw, 19px); font-weight: 600; letter-spacing: -.01em; white-space: nowrap; }
+  .tienda:active { scale: 0.97; }
+  .tienda:focus-visible { outline: 3px solid var(--crema); outline-offset: 3px; }
+  .kfeel-mini { display: inline-flex; align-items: center; gap: 5px; white-space: nowrap; vertical-align: middle; }
+  .kfeel-mini img { width: 20px; height: 20px; border-radius: 5px; box-shadow: 0 0 0 1.5px var(--blanco); display: block; }
+  .sticker { flex: none; padding: 1px 9px 2px; border: 2.5px solid var(--blanco); border-radius: 10px; background: var(--rojo); color: var(--blanco);
+    font-size: 16px; font-weight: 900; line-height: 1.15; box-shadow: 0 3px 0 rgb(10 18 45 / .45); }
+  [data-contador][hidden] { display: none !important; }
+  .entrada { margin: 0 0 10px; display: flex; align-items: center; justify-content: center; gap: 10px; font-size: 13px; font-weight: 700; color: var(--crema); }
 
+  body { grid-template-rows: auto minmax(0, 1fr) auto; }
+  /* el contador usa la franja vacía junto al logo */
+  .contador { position: absolute; top: 16px; left: 24px; display: flex; align-items: baseline; gap: 6px;
+    padding: 6px 14px 7px; border-radius: 14px; background: var(--crema); color: var(--marino);
+    font-size: 15px; font-weight: 800; box-shadow: 0 4px 0 var(--rojo); rotate: -2deg; }
+  .contador strong { font-size: 30px; font-weight: 900; line-height: 1; letter-spacing: -.02em; color: var(--rojo); }
+  header { padding-top: 104px; } /* franja más alta: el contador respira sobre el titular */
+  .bajada { margin: 14px 0 0; }
+  .dia { font-size: clamp(14px, 4.2vw, 16px); font-weight: 900; text-transform: uppercase; line-height: 1.15; }
+  .lugar { margin-top: 3px; font-size: 12px; line-height: 1.35; color: var(--crema); }
+  .tiendas { padding: 6px 24px max(36px, calc(env(safe-area-inset-bottom) + 16px)); } /* más aire bajo las insignias */
+  /* teléfonos plegables abiertos: los botones de la rueda ocupan todo el ancho, alineados con el titular y las tiendas */
+  @media (min-width: 600px) { .item { width: calc(100vw - 48px); } }
+  @media (max-height: 700px) { body > header { padding-top: 92px; } .tiendas { padding-bottom: max(26px, calc(env(safe-area-inset-bottom) + 12px)); } .contador { top: 12px; } .contador strong { font-size: 24px; } }
 
-  /* teléfonos bajitos: el titular cede espacio a la rueda */
   @media (max-height: 700px) {
-    header { padding-top: 52px; }
-    h1 { font-size: 32px; }
-    }
-
-  @media (prefers-reduced-motion: no-preference) {
-    .nube-1 { animation: flota 9s ease-in-out infinite alternate; }
-    @keyframes flota { to { translate: 10px 0; } }
+    header { padding-top: 76px; }
+    .logo { width: 74px; top: 10px; }
+    h1 { font-size: 29px; }
   }
 </style>
 </head>
@@ -126,25 +113,20 @@ fbq('track', 'PageView');
 <noscript><img height="1" width="1" style="display:none" alt=""
 src="https://www.facebook.com/tr?id=1114796387611197&ev=PageView&noscript=1"
 /></noscript>
-  <img class="adorno nube-1" src="iconos/nube-4.svg" alt="">
+
 
   <header>
+    <img class="logo entra" style="--n:0" src="assets/logo.png" alt="Festival Coreano RD">
+    <p class="contador entra" style="--n:0" data-contador="corto" hidden></p>
     <h1><span class="l1 entra" style="--n:0">¡Sé parte<span class="impacto" aria-hidden="true"><i></i><i></i><i></i></span></span><span class="l2 entra" style="--n:1">del festival!</span></h1>
+    <div class="bajada entra" style="--n:2"><p class="dia" style="margin:0">Sábado 28 de noviembre</p><p class="lugar" style="margin:3px 0 0">Explanada Fray Antonio de Montesinos,<br>Malecón de Santo Domingo</p></div>
   </header>
+  <nav class="escenario entra" style="--n:3" aria-label="Formularios del festival"></nav>
+  <section class="tiendas entra" style="--n:4" aria-label="Descargar KFeel"><p class="entrada"><span class="sticker" aria-label="Entrada: 9.99 dólares">US$9.99</span><span>Tu entrada, en la app <span class="kfeel-mini"><img src="iconos/kfeel.png" alt="" width="20" height="20">KFeel</span></span></p><div class="insignias"></div></section>
 
-  <nav class="escenario entra" style="--n:2" aria-label="Enlaces del festival"></nav>
-
-  <footer class="entra" style="--n:3">
-    <div>
-      <p class="dia">Sábado 28 de noviembre</p>
-      <p class="lugar">Explanada Fray Antón de Montesinos,<br>Malecón de Santo Domingo</p>
-      <p class="precio"><span class="sticker" aria-label="Entrada: 9.99 dólares">US$9.99</span><small>Entrada en la app KFeel</small></p>
-    </div>
-    <img class="logo" src="assets/logo.png" alt="Festival Coreano RD">
-  </footer>
 
 <script type="module">
-  import { BOTONES, externo, plazo, vibrarAlCambiar, avisarPendientes } from './enlaces.js?v=6';
+  import { BOTONES, TIENDAS, externo, plazo, vibrarAlCambiar, avisarPendientes } from './enlaces.js?v=8';
   import { crearRueda } from './rueda.js?v=2';
   avisarPendientes();
 
@@ -177,35 +159,48 @@ src="https://www.facebook.com/tr?id=1114796387611197&ev=PageView&noscript=1"
     toqueDirecto: 2.2, // cualquier botón visible se abre con un toque
     giro: 0,           // quieta: solo se mueve cuando la persona la arrastra
     inicio: 0,         // sin giro de entrada
-    // al cargar, el botón seleccionado es el de KFeel para Android (se busca por el link, no por el nombre)
-    centro: BOTONES.findIndex(e => e.url.includes('play.google.com')),
+    // al cargar queda seleccionado el del medio, así se ven los tres formularios
+    centro: 1,
     alCuadro: vibrarAlCambiar(() => rueda, N),
     colocar(el, d) {
       const a = d * GRADOS, k = Math.abs(d);
-      if (k > 2.7) { el.style.visibility = 'hidden'; return; }
+      if (k > 1.7) { el.style.visibility = 'hidden'; return; }
       const r = a * Math.PI / 180;
       el.style.visibility = '';
       el.style.transform = `translate(-50%, -50%) translate3d(0, ${R * Math.sin(r)}px, ${R * (Math.cos(r) - 1)}px) rotateX(${-a}deg)`;
-      el.style.opacity = Math.cos(r) ** 1.4 * Math.min(1, Math.max(0, (2.7 - k) / 0.7));
+      el.style.opacity = Math.cos(r) ** 1.4 * Math.min(1, Math.max(0, (1.7 - k) / 0.6));
     },
   });
 
-  // Cada toque que abre un enlace se mide en Google Analytics y en el píxel de Meta.
-  // Va en fase de burbuja: si la rueda canceló el toque (fue un arrastre), defaultPrevented ya es true y no se cuenta.
-  escenario.addEventListener('click', e => {
-    const a = e.target.closest('.item');
-    if (!a || e.defaultPrevented) return;
-    const href = a.getAttribute('href');
-    if (!href || href.startsWith('#')) return;
-    const boton = a.querySelector('b').textContent;
+  {
+    const hoy = new Date(), fiesta = new Date(2026, 10, 28);
+    const dias = Math.round((fiesta - new Date(hoy.getFullYear(), hoy.getMonth(), hoy.getDate())) / 864e5);
+    const verbo = dias === 1 ? 'Falta' : 'Faltan', unidad = dias === 1 ? 'día' : 'días';
+    document.querySelectorAll('[data-contador]').forEach(c => {
+      if (dias < 0) return;
+      const modo = c.dataset.contador;
+      c.innerHTML = dias === 0 ? '<strong>¡Es hoy!</strong>'
+        : modo === 'pila' ? `<small>${verbo}</small><strong>${dias}</strong><small>${unidad}</small>`
+        : `${verbo} <strong>${dias}</strong> ${unidad}${modo === 'frase' ? ' para el festival' : ''}`;
+      c.hidden = false;
+    });
+  }
 
+  // Las insignias de las tiendas
+  const glifoTienda = t => `<span class="ico-m" style="--src:url('iconos/${t.icono}.svg')" aria-hidden="true"></span>`;
+  document.querySelector('.insignias').innerHTML = TIENDAS.map(t => `
+    <a class="tienda" href="${t.url}"${externo(t)} data-boton="${t.titulo}" aria-label="${t.titulo}: ${t.arriba} ${t.abajo}">
+      ${glifoTienda(t)}<span class="txt"><small>${t.arriba}</small><b>${t.abajo}</b></span>
+    </a>`).join('');
+
+  // Cada toque que abre un enlace se mide en Google Analytics y en el píxel de Meta
+  function medir(boton, href) {
     if (typeof gtag === 'function') {
       gtag('event', 'clic_boton', { boton, destino: href, transport_type: 'beacon' });
     }
-
     if (typeof fbq === 'function') {
       // Evento estándar, para que los anuncios puedan optimizar hacia él:
-      // los formularios cuentan como Lead; los botones de KFeel (donde se compra la entrada) como InitiateCheckout
+      // los formularios cuentan como Lead; las tiendas de KFeel (donde se compra la entrada) como InitiateCheckout
       const esApp = /apps\.apple\.com|play\.google\.com/.test(href);
       const esFormulario = /docs\.google\.com\/forms/.test(href);
       if (esApp) fbq('track', 'InitiateCheckout', { content_name: boton, content_category: 'Entrada en KFeel' });
@@ -213,6 +208,21 @@ src="https://www.facebook.com/tr?id=1114796387611197&ev=PageView&noscript=1"
       // Evento propio con el nombre de cada botón, igual que en Analytics
       fbq('trackCustom', 'ClicBoton', { boton, destino: href });
     }
+  }
+
+  // Rueda: en fase de burbuja; si la rueda canceló el toque (fue un arrastre), defaultPrevented ya es true y no se cuenta
+  escenario.addEventListener('click', e => {
+    const a = e.target.closest('.item');
+    if (!a || e.defaultPrevented) return;
+    const href = a.getAttribute('href');
+    if (!href || href.startsWith('#')) return;
+    medir(a.querySelector('b').textContent, href);
+  });
+
+  // Insignias de las tiendas
+  document.querySelector('.insignias').addEventListener('click', e => {
+    const a = e.target.closest('.tienda');
+    if (a) medir(a.dataset.boton, a.getAttribute('href'));
   });
 </script>
 </body>

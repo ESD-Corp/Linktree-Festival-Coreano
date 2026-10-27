@@ -3,22 +3,23 @@
 En línea: <https://linktree-festival-coreano.vercel.app>
 
 Página de enlaces para la bio de Instagram y TikTok del Festival Coreano RD
-(sábado 28 de noviembre de 2026, Explanada Fray Antón de Montesinos, Malecón de Santo Domingo).
+(sábado 28 de noviembre de 2026, Explanada Fray Antonio de Montesinos, Malecón de Santo Domingo).
 
-Los cinco botones van en un tambor: el que queda en el centro se vuelve una etiqueta roja.
+Arriba, el contador de días junto al logo, el titular y la fecha con el lugar. Los tres formularios van en un tambor:
+el que queda en el centro se vuelve una etiqueta roja. Abajo, el precio de la entrada y las insignias de KFeel (App Store y Google Play).
 El tambor está quieto y se mueve con el dedo, la rueda del mouse o las flechas del teclado.
-La estética sigue las piezas de la campaña (marino liso, nube crema, trazos rojos, etiqueta roja tipo sticker).
+La estética sigue las piezas de la campaña (marino liso, logo con contorno blanco, trazos rojos, etiqueta roja tipo sticker).
 
 ## Archivos
 
 | Archivo | Qué hace |
 |---|---|
-| `index.html` | La página: estilos propios, titular, footer con fecha, lugar y precio. |
-| `enlaces.js` | **Los 5 botones** (texto, link e ícono) y el aviso de cierre de la convocatoria de K-Pop. |
+| `index.html` | La página: contador, titular, fecha y lugar, tambor, entrada e insignias de KFeel. |
+| `enlaces.js` | **Los 3 formularios** del tambor y **las 2 tiendas** de KFeel (texto, link e ícono), y el cierre de la audición de K-Pop. |
 | `rueda.js` | El movimiento del tambor: giro automático, arrastre con inercia, rueda del mouse y teclado. |
 | `comun.css` | Colores y tipografía del sistema visual. |
 | `assets/` | Logo. |
-| `iconos/` | Íconos de los botones y la nube. El puesto de expositores sale del ícono oficial de la marca; los logos de Apple y Android, de Simple Icons. |
+| `iconos/` | Íconos de los botones, de las tiendas y el logo de KFeel. El puesto de expositores sale del ícono oficial de la marca; los logos de Apple y Android, de Simple Icons. |
 
 ## Cambiar un enlace
 

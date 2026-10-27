@@ -1,10 +1,15 @@
-// Los 5 botones del linktree.
+// Los botones de la rueda (formularios).
 export const BOTONES = [
   { titulo: 'Formulario Expositores', detalle: 'Registro para tener un puesto', url: 'https://docs.google.com/forms/d/e/1FAIpQLSeBt7U1_kzhP4jhPNDD34wx-xxohwMS4JyMyS2vKqWPGKdEZA/viewform', icono: 'puesto.png' },
   { titulo: 'Formulario Voluntarios', detalle: 'Logística, prensa o atención', url: 'https://docs.google.com/forms/d/e/1FAIpQLScb_STZoVUkmY5LVGDxjxt8ojrgZl0zchC12yaxvfW9-xwvDw/viewform', icono: 'hand-heart' },
-  { titulo: 'Formulario K-Pop dance crews', detalle: 'Videos hasta el 20 de octubre', url: 'https://docs.google.com/forms/d/e/1FAIpQLSenH1oB6EPAzSZaOwbWKwLs5yh4_4wBGweBWPvAqOtrShM6Ig/viewform', icono: 'microphone', cierra: '2026-10-20' },
-  { titulo: 'KFeel en iPhone', detalle: 'Tu entrada al festival, en la App Store', url: 'https://apps.apple.com/do/app/kfeel/id6810140328', icono: 'apple' },
-  { titulo: 'KFeel Android', detalle: 'Tu entrada al festival, en Google Play', url: 'https://play.google.com/store/apps/details?id=app.kfeel', icono: 'android' },
+  { titulo: 'Audición grupos K-Pop', detalle: 'Videos hasta el 31 de octubre', url: 'https://docs.google.com/forms/d/e/1FAIpQLSenH1oB6EPAzSZaOwbWKwLs5yh4_4wBGweBWPvAqOtrShM6Ig/viewform', icono: 'microphone', cierra: '2026-10-31' },
+];
+
+// Las dos tiendas de KFeel, fuera de la rueda, como insignias debajo de ella.
+// «titulo» es el nombre que llega a Analytics y Meta (el mismo de antes, para no cortar los informes).
+export const TIENDAS = [
+  { titulo: 'KFeel en iPhone', arriba: 'Descárgalo en el', abajo: 'App Store', url: 'https://apps.apple.com/do/app/kfeel/id6810140328', icono: 'apple' },
+  { titulo: 'KFeel Android', arriba: 'Disponible en', abajo: 'Google Play', url: 'https://play.google.com/store/apps/details?id=app.kfeel', icono: 'googleplay' },
 ];
 
 export function externo(e) {
