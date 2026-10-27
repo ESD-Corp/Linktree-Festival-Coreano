@@ -7,10 +7,38 @@ export const BOTONES = [
 
 // Las dos tiendas de KFeel, fuera de la rueda, como insignias debajo de ella.
 // «titulo» es el nombre que llega a Analytics y Meta (el mismo de antes, para no cortar los informes).
+// «evento» es además un evento propio de cada tienda en Analytics: su nombre no cambia aunque cambie el texto
+// del botón, se cuenta sin configurar nada en Analytics y se puede marcar como evento clave.
 export const TIENDAS = [
-  { titulo: 'KFeel en iPhone', arriba: 'Descárgalo en el', abajo: 'App Store', url: 'https://apps.apple.com/do/app/kfeel/id6810140328', icono: 'apple' },
-  { titulo: 'KFeel Android', arriba: 'Disponible en', abajo: 'Google Play', url: 'https://play.google.com/store/apps/details?id=app.kfeel', icono: 'googleplay' },
+  { titulo: 'KFeel en iPhone', evento: 'kfeel_iphone', arriba: 'Descárgalo en el', abajo: 'App Store', url: 'https://apps.apple.com/do/app/kfeel/id6810140328', icono: 'apple' },
+  { titulo: 'KFeel Android', evento: 'kfeel_android', arriba: 'Disponible en', abajo: 'Google Play', url: 'https://play.google.com/store/apps/details?id=app.kfeel', icono: 'googleplay' },
 ];
+
+// Código de proveedor (pt) de la cuenta de KFeel en App Store Connect. Sin él, Apple ignora la campaña,
+// así que mientras esté vacío el enlace de iPhone no se toca.
+export const APPLE_PT = '';
+
+// De qué red llega la visita: la etiqueta utm_source del enlace (Instagram agrega «ig» a los enlaces de la bio)
+// o, si no hay, la página de donde viene. Se guarda para toda la visita.
+export function redDeOrigen() {
+  try { const g = sessionStorage.getItem('red_origen'); if (g) return g; } catch {}
+  const utm = new URLSearchParams(location.search).get('utm_source') || '';
+  let ref = '';
+  try { const u = new URL(document.referrer); if (u.hostname !== location.hostname) ref = u.hostname; } catch {}
+  const f = (utm || ref).toLowerCase();
+  const red = !f ? 'directo' : /instagram|^ig$/.test(f) ? 'instagram' : /tiktok/.test(f) ? 'tiktok' : /facebook|^fb$|^meta$/.test(f) ? 'facebook' : 'otros';
+  try { sessionStorage.setItem('red_origen', red); } catch {}
+  return red;
+}
+
+// El enlace a la tienda lleva la red de origen, para que la tienda pueda contar las descargas por red:
+// Google Play la lee del parámetro «referrer» (informes de campañas UTM) y App Store de «ct» (requiere APPLE_PT).
+export function enlaceTienda(t, red) {
+  const u = new URL(t.url);
+  if (u.hostname === 'play.google.com') u.searchParams.set('referrer', `utm_source=${red}&utm_medium=linktree&utm_campaign=kfestrd2026`);
+  else if (u.hostname === 'apps.apple.com' && APPLE_PT) { u.searchParams.set('pt', APPLE_PT); u.searchParams.set('ct', `${red}-linktree`); u.searchParams.set('mt', '8'); }
+  return u.toString();
+}
 
 export function externo(e) {
   return /^https?:/.test(e.url) ? ' target="_blank" rel="noopener"' : '';

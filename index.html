@@ -126,7 +126,7 @@ src="https://www.facebook.com/tr?id=1114796387611197&ev=PageView&noscript=1"
 
 
 <script type="module">
-  import { BOTONES, TIENDAS, externo, plazo, vibrarAlCambiar, avisarPendientes } from './enlaces.js?v=8';
+  import { BOTONES, TIENDAS, externo, plazo, vibrarAlCambiar, avisarPendientes, redDeOrigen, enlaceTienda } from './enlaces.js?v=9';
   import { crearRueda } from './rueda.js?v=2';
   avisarPendientes();
 
@@ -186,17 +186,20 @@ src="https://www.facebook.com/tr?id=1114796387611197&ev=PageView&noscript=1"
     });
   }
 
-  // Las insignias de las tiendas
+  // Las insignias de las tiendas, con la red de origen dentro del enlace
+  const red = redDeOrigen();
   const glifoTienda = t => `<span class="ico-m" style="--src:url('iconos/${t.icono}.svg')" aria-hidden="true"></span>`;
   document.querySelector('.insignias').innerHTML = TIENDAS.map(t => `
-    <a class="tienda" href="${t.url}"${externo(t)} data-boton="${t.titulo}" aria-label="${t.titulo}: ${t.arriba} ${t.abajo}">
+    <a class="tienda" href="${enlaceTienda(t, red)}"${externo(t)} data-boton="${t.titulo}" data-evento="${t.evento}" aria-label="${t.titulo}: ${t.arriba} ${t.abajo}">
       ${glifoTienda(t)}<span class="txt"><small>${t.arriba}</small><b>${t.abajo}</b></span>
     </a>`).join('');
 
-  // Cada toque que abre un enlace se mide en Google Analytics y en el píxel de Meta
-  function medir(boton, href) {
+  // Cada toque que abre un enlace se mide en Google Analytics y en el píxel de Meta, con la red de origen
+  function medir(boton, href, evento) {
     if (typeof gtag === 'function') {
-      gtag('event', 'clic_boton', { boton, destino: href, transport_type: 'beacon' });
+      gtag('event', 'clic_boton', { boton, destino: href, red_origen: red, transport_type: 'beacon' });
+      // las tiendas de KFeel mandan también su propio evento (kfeel_iphone o kfeel_android)
+      if (evento) gtag('event', evento, { red_origen: red, transport_type: 'beacon' });
     }
     if (typeof fbq === 'function') {
       // Evento estándar, para que los anuncios puedan optimizar hacia él:
@@ -222,7 +225,7 @@ src="https://www.facebook.com/tr?id=1114796387611197&ev=PageView&noscript=1"
   // Insignias de las tiendas
   document.querySelector('.insignias').addEventListener('click', e => {
     const a = e.target.closest('.tienda');
-    if (a) medir(a.dataset.boton, a.getAttribute('href'));
+    if (a) medir(a.dataset.boton, a.getAttribute('href'), a.dataset.evento);
   });
 </script>
 </body>
