@@ -1,8 +1,9 @@
 // Los botones de la rueda (formularios).
+// «id» da nombre al evento de tiempo real de cada botón (toque_<id>_<origen>, ver index.html).
 export const BOTONES = [
-  { titulo: 'Formulario Expositores', detalle: 'Registro para tener un puesto', url: 'https://docs.google.com/forms/d/e/1FAIpQLSeBt7U1_kzhP4jhPNDD34wx-xxohwMS4JyMyS2vKqWPGKdEZA/viewform', icono: 'puesto.png' },
-  { titulo: 'Formulario Voluntarios', detalle: 'Logística, prensa o atención', url: 'https://docs.google.com/forms/d/e/1FAIpQLScb_STZoVUkmY5LVGDxjxt8ojrgZl0zchC12yaxvfW9-xwvDw/viewform', icono: 'hand-heart' },
-  { titulo: 'Audición grupos K-Pop', detalle: 'Videos hasta el 31 de octubre', url: 'https://docs.google.com/forms/d/e/1FAIpQLSenH1oB6EPAzSZaOwbWKwLs5yh4_4wBGweBWPvAqOtrShM6Ig/viewform', icono: 'microphone', cierra: '2026-10-31' },
+  { id: 'expositores', titulo: 'Formulario Expositores', detalle: 'Registro para tener un puesto', url: 'https://docs.google.com/forms/d/e/1FAIpQLSeBt7U1_kzhP4jhPNDD34wx-xxohwMS4JyMyS2vKqWPGKdEZA/viewform', icono: 'puesto.png' },
+  { id: 'voluntarios', titulo: 'Formulario Voluntarios', detalle: 'Logística, prensa o atención', url: 'https://docs.google.com/forms/d/e/1FAIpQLScb_STZoVUkmY5LVGDxjxt8ojrgZl0zchC12yaxvfW9-xwvDw/viewform', icono: 'hand-heart' },
+  { id: 'kpop', titulo: 'Audición grupos K-Pop', detalle: 'Videos hasta el 31 de octubre', url: 'https://docs.google.com/forms/d/e/1FAIpQLSenH1oB6EPAzSZaOwbWKwLs5yh4_4wBGweBWPvAqOtrShM6Ig/viewform', icono: 'microphone', cierra: '2026-10-31' },
 ];
 
 // Las dos tiendas de KFeel, fuera de la rueda, como insignias debajo de ella.
@@ -18,23 +19,24 @@ export const TIENDAS = [
 // así que mientras esté vacío el enlace de iPhone no se toca.
 export const APPLE_PT = '';
 
-// De qué red llega la visita: la etiqueta utm_source del enlace (Instagram agrega «ig» a los enlaces de la bio),
+// De dónde llega la visita: solo tres orígenes, «instagram», «tiktok» o «directo».
+// Primero la etiqueta utm_source del enlace (/ig y /tt la ponen; Instagram agrega «ig» a los enlaces de la bio),
 // si no, la app que abrió el sitio (TikTok no manda la página de origen, ni siquiera desde un mensaje)
-// y, por último, la página de donde viene. Se guarda para toda la visita.
+// y, por último, la página de donde viene. Todo lo demás cuenta como directo. Se guarda para toda la visita.
 export function appDelNavegador(ua = navigator.userAgent) {
   if (/musical_ly|trill_|Bytedance|TikTok/i.test(ua)) return 'tiktok';
   if (/Instagram/.test(ua)) return 'instagram';
-  if (/FBAN|FBAV|FB_IAB/.test(ua)) return 'facebook';
   return '';
 }
 
 export function redDeOrigen() {
-  try { const g = sessionStorage.getItem('red_origen'); if (g) return g; } catch {}
+  const ORIGENES = ['instagram', 'tiktok', 'directo'];
+  try { const g = sessionStorage.getItem('red_origen'); if (ORIGENES.includes(g)) return g; } catch {}
   const utm = new URLSearchParams(location.search).get('utm_source') || '';
   let ref = '';
   try { const u = new URL(document.referrer); if (u.hostname !== location.hostname) ref = u.hostname; } catch {}
   const f = (utm || appDelNavegador() || ref).toLowerCase();
-  const red = !f ? 'directo' : /instagram|^ig$/.test(f) ? 'instagram' : /tiktok/.test(f) ? 'tiktok' : /facebook|^fb$|^meta$/.test(f) ? 'facebook' : 'otros';
+  const red = /instagram|^ig$/.test(f) ? 'instagram' : /tiktok/.test(f) ? 'tiktok' : 'directo';
   try { sessionStorage.setItem('red_origen', red); } catch {}
   return red;
 }

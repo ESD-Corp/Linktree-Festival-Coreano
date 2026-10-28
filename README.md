@@ -59,30 +59,33 @@ python3 -m http.server 8744
 Luego abre <http://localhost:8744>. Hace falta un servidor (no funciona abriendo el archivo directo)
 porque los scripts son módulos.
 
-## Enlaces cortos por lugar
+## Tres orígenes de tráfico
 
-Cada lugar donde se publica el sitio tiene su enlace. Redirige a la página principal con la fuente y el medio
-marcados (`utm_source`, `utm_medium`, `utm_campaign=kfestrd2026`), así Analytics sabe de dónde vino la visita
-aunque la app no lo diga (TikTok nunca lo dice).
-
-| Enlace | Para | Fuente / medio |
+| Enlace | Origen | En Analytics |
 |---|---|---|
-| `festivalcoreanord.com.do/ig` | Bio de Instagram | instagram / bio |
-| `/ig-historias` | Historias de Instagram | instagram / historias |
-| `/ig-ads` | Anuncios en Instagram | instagram / ads |
-| `/tt` | TikTok: mensajes, videos, comentarios y bio | tiktok / social |
-| `/tt-ads` | Anuncios en TikTok | tiktok / ads |
-| `/fb` | Facebook | facebook / social |
-| `/wa` | WhatsApp | whatsapp / mensaje |
-| `/qr` | Códigos QR en piezas impresas | qr / impreso |
+| `festivalcoreanord.com.do` | Tráfico directo (y todo lo que no sea Instagram ni TikTok) | `red_origen = directo` |
+| `festivalcoreanord.com.do/ig` | Instagram | `utm_source=instagram`, `red_origen = instagram` |
+| `festivalcoreanord.com.do/tt` | TikTok | `utm_source=tiktok`, `red_origen = tiktok` |
 
+`/ig` y `/tt` redirigen a la página principal con `utm_source`, `utm_medium` y `utm_campaign=kfestrd2026`.
+Si alguien abre la página principal desde el navegador interno de Instagram o TikTok, también se reconoce el origen.
 Para distinguir publicaciones, agrega `?v=` con un nombre corto: `/tt?v=reel-audicion` llega como `utm_content=reel-audicion`.
-Para un lugar nuevo, copia una carpeta y cambia `data-fuente`, `data-medio` y la dirección del `meta refresh`.
 
-El sitio manda además `red_origen` en todos sus eventos de Analytics, con la red detectada (de la etiqueta, del navegador
-de la app o de la página de origen). Las tiendas mandan `kfeel_iphone` y `kfeel_android`.
-Al llegar, cada visita manda una vez `llegada_<red>` (`llegada_tiktok`, `llegada_instagram`…): sirve para ver en el tiempo real
-de Analytics, al instante, de dónde vino alguien, porque ahí no aparece la fuente de la visita.
+## Eventos por botón
+
+| Evento | Cuándo | Para qué |
+|---|---|---|
+| `clic_boton` | Cualquier botón (parámetros `boton`, `destino`, `red_origen`) | Informes y exploraciones |
+| `kfeel_iphone` / `kfeel_android` | Tiendas de KFeel (parámetro `red_origen`) | Eventos clave |
+| `llegada_directo` / `llegada_instagram` / `llegada_tiktok` | Una vez por visita | Tiempo real: de dónde llega la gente |
+| `toque_<botón>_<origen>` | Cada botón | Tiempo real: qué botón tocan y desde dónde |
+
+Botones: `expositores`, `voluntarios`, `kpop`, `kfeel_iphone`, `kfeel_android`. Ejemplos: `toque_kpop_tiktok`,
+`toque_kfeel_android_instagram`, `toque_voluntarios_directo`.
+
+**Medir en tiempo real:** Analytics → Informes → Tiempo real → tarjeta «Recuento de eventos por nombre del evento».
+Los `llegada_…` dicen cuántas visitas llegan de cada origen y los `toque_…` qué botón tocan desde cada origen.
+El tiempo real no muestra la fuente de la visita ni los parámetros, por eso el origen va en el nombre del evento.
 
 ## Publicar cambios
 
