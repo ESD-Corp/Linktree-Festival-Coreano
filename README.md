@@ -35,10 +35,9 @@ K-Pop se ve atenuado (convocatoria cerrada); la fecha sale de `cierra` en `enlac
 
 ## Google Analytics
 
-La página usa la propiedad `G-Q073ND6GGD`. Cada vez que un toque abre un botón se envía el evento
-`clic_boton` con los parámetros `boton` (el texto del botón) y `destino` (el link). Arrastrar la rueda no
-cuenta. Para verlo por botón en los informes, registra en Analytics una dimensión personalizada de ámbito
-Evento con el parámetro `boton`.
+La página usa la propiedad `G-Q073ND6GGD` y solo manda cuatro cosas (desde el 29 oct; ver «Eventos»):
+visitas, llegadas por `/ig` y por `/tt`, y toques en las tiendas de KFeel. Los toques en los formularios
+se miden solo en los píxeles de Meta y TikTok.
 
 ## Píxel de Meta
 
@@ -77,33 +76,28 @@ python3 -m http.server 8744
 Luego abre <http://localhost:8744>. Hace falta un servidor (no funciona abriendo el archivo directo)
 porque los scripts son módulos.
 
-## Tres orígenes de tráfico
+## Enlaces y eventos
 
-| Enlace | Origen | En Analytics |
+| Enlace | Origen | Evento en Analytics |
 |---|---|---|
-| `festivalcoreanord.com.do` | Tráfico directo (y todo lo que no sea Instagram ni TikTok) | `red_origen = directo` |
-| `festivalcoreanord.com.do/ig` | Instagram | `utm_source=instagram`, `red_origen = instagram` |
-| `festivalcoreanord.com.do/tt` | TikTok | `utm_source=tiktok`, `red_origen = tiktok` |
+| `festivalcoreanord.com.do` | Todas las visitas | `page_view` (automático): el total de visitas |
+| `festivalcoreanord.com.do/ig` | Instagram | `llegada_instagram`, una vez por visita |
+| `festivalcoreanord.com.do/tt` | TikTok | `llegada_tiktok`, una vez por visita |
 
-`/ig` y `/tt` redirigen a la página principal con `utm_source`, `utm_medium` y `utm_campaign=kfestrd2026`.
-Si alguien abre la página principal desde el navegador interno de Instagram o TikTok, también se reconoce el origen.
+`/ig` y `/tt` redirigen a la página principal con `utm_source`, `utm_medium` y `utm_campaign=kfestrd2026`; el
+evento solo sale cuando la dirección trae esa campaña. Quien entra por la página principal (aunque venga de la
+bio de Instagram sin `/ig`) no manda evento de origen: cuenta solo como `page_view`.
 Para distinguir publicaciones, agrega `?v=` con un nombre corto: `/tt?v=reel-audicion` llega como `utm_content=reel-audicion`.
 
-## Eventos por botón
+| Evento | Cuándo |
+|---|---|
+| `kfeel_android` | Cada toque en la insignia de Google Play (sin parámetros) |
+| `kfeel_iphone` | Cada toque en la insignia de App Store (sin parámetros) |
 
-| Evento | Cuándo | Para qué |
-|---|---|---|
-| `clic_boton` | Cualquier botón (parámetros `boton`, `destino`, `red_origen`) | Informes y exploraciones |
-| `kfeel_iphone` / `kfeel_android` | Tiendas de KFeel (parámetro `red_origen`) | Eventos clave |
-| `llegada_directo` / `llegada_instagram` / `llegada_tiktok` | Una vez por visita | Tiempo real: de dónde llega la gente |
-| `toque_<botón>_<origen>` | Cada botón | Tiempo real: qué botón tocan y desde dónde |
-
-Botones: `expositores`, `voluntarios`, `kpop`, `kfeel_iphone`, `kfeel_android`. Ejemplos: `toque_kpop_tiktok`,
-`toque_kfeel_android_instagram`, `toque_voluntarios_directo`.
+Los dos son eventos clave en Analytics. Hasta el 28 oct también existían `clic_boton`, `toque_<botón>_<origen>`,
+`llegada_directo` y el parámetro `red_origen`; se quitaron para simplificar.
 
 **Medir en tiempo real:** Analytics → Informes → Tiempo real → tarjeta «Recuento de eventos por nombre del evento».
-Los `llegada_…` dicen cuántas visitas llegan de cada origen y los `toque_…` qué botón tocan desde cada origen.
-El tiempo real no muestra la fuente de la visita ni los parámetros, por eso el origen va en el nombre del evento.
 
 ## Publicar cambios
 

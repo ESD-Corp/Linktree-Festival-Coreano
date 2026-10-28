@@ -10,42 +10,17 @@
   function gtag(){dataLayer.push(arguments);}
   gtag('js', new Date());
 
-  // Tres orígenes de tráfico: festivalcoreanord.com.do (directo), /ig (Instagram) y /tt (TikTok).
-  // Las apps abren el sitio en su propio navegador y no siempre dicen de dónde viene la visita
-  // (TikTok nunca lo dice). Si el enlace no trae utm_source, se reconoce Instagram o TikTok por su navegador
-  // y se le pasa a Analytics como fuente. Todo lo demás cuenta como directo.
-  // El origen (red_origen: instagram, tiktok o directo) viaja en todos los eventos de la visita, también en page_view,
-  // y se guarda para que los botones y el enlace a Google Play usen el mismo.
+  // Analytics mide solo tres cosas: las visitas (page_view, que cuenta solo), los toques en las tiendas
+  // (kfeel_android y kfeel_iphone, más abajo) y, una vez por visita, de qué enlace corto vino la gente:
+  // /ig manda llegada_instagram y /tt manda llegada_tiktok. Los dos enlaces ponen utm_campaign=kfestrd2026;
+  // sin esa etiqueta no se manda nada y la visita queda solo como page_view.
+  gtag('config', 'G-Q073ND6GGD');
   (function () {
-    var q = new URLSearchParams(location.search), ua = navigator.userAgent, app = '', red = '';
-    var utm = (q.get('utm_source') || '').toLowerCase();
-    if (!utm) {
-      if (/musical_ly|trill_|Bytedance|TikTok/i.test(ua)) app = 'tiktok';
-      else if (/Instagram/.test(ua)) app = 'instagram';
-    }
-    // Un enlace con etiqueta manda; si no, se mantiene la red con la que empezó la visita.
-    if (!utm) try { red = sessionStorage.getItem('red_origen') || ''; } catch (e) {}
-    if (!/^(instagram|tiktok|directo)$/.test(red)) red = '';
-    if (!red) {
-      var ref = '';
-      try { var u = new URL(document.referrer); if (u.hostname !== location.hostname) ref = u.hostname.toLowerCase(); } catch (e) {}
-      var f = utm || app || ref;
-      red = /instagram|^ig$/.test(f) ? 'instagram' : /tiktok/.test(f) ? 'tiktok' : 'directo';
-      try { sessionStorage.setItem('red_origen', red); } catch (e) {}
-    }
-    gtag('set', { red_origen: red });
-    if (app) {
-      q.set('utm_source', app); q.set('utm_medium', 'app');
-      gtag('config', 'G-Q073ND6GGD', { page_location: location.origin + location.pathname + '?' + q + location.hash });
-    } else gtag('config', 'G-Q073ND6GGD');
-    // Tiempo real: una vez por visita, un evento con el origen en el nombre (llegada_directo, llegada_instagram,
-    // llegada_tiktok). El tiempo real de Analytics muestra los nombres de eventos al instante, pero no la fuente de la visita.
-    var enviada = '';
-    try { enviada = sessionStorage.getItem('llegada_enviada') || ''; } catch (e) {}
-    if (enviada !== red) {
-      gtag('event', 'llegada_' + red);
-      try { sessionStorage.setItem('llegada_enviada', red); } catch (e) {}
-    }
+    var q = new URLSearchParams(location.search);
+    var red = q.get('utm_campaign') === 'kfestrd2026' ? q.get('utm_source') : '';
+    if (red !== 'instagram' && red !== 'tiktok') return;
+    try { if (sessionStorage.getItem('llegada_enviada') === red) return; sessionStorage.setItem('llegada_enviada', red); } catch (e) {}
+    gtag('event', 'llegada_' + red);
   })();
 </script>
 <!-- Meta Pixel Code -->
@@ -172,7 +147,7 @@ src="https://www.facebook.com/tr?id=1114796387611197&ev=PageView&noscript=1"
 
 
 <script type="module">
-  import { BOTONES, TIENDAS, externo, plazo, vibrarAlCambiar, avisarPendientes, redDeOrigen, enlaceTienda } from './enlaces.js?v=11';
+  import { BOTONES, TIENDAS, externo, plazo, vibrarAlCambiar, avisarPendientes, redDeOrigen, enlaceTienda } from './enlaces.js?v=12';
   import { crearRueda } from './rueda.js?v=2';
   avisarPendientes();
 
@@ -185,7 +160,7 @@ src="https://www.facebook.com/tr?id=1114796387611197&ev=PageView&noscript=1"
   escenario.innerHTML = [...BOTONES, ...BOTONES].map((e, i) => {
     const pl = plazo(e);
     return `
-    <a class="item${pl?.cerrado ? ' cerrado' : ''}" href="${e.url}" data-id="${e.id}"${externo(e)}${i >= N ? ' aria-hidden="true" tabindex="-1"' : ''}>
+    <a class="item${pl?.cerrado ? ' cerrado' : ''}" href="${e.url}"${externo(e)}${i >= N ? ' aria-hidden="true" tabindex="-1"' : ''}>
       <span class="disco">${glifo(e)}</span>
       <span class="txt"><b>${e.titulo}</b></span>
     </a>`;
@@ -232,7 +207,7 @@ src="https://www.facebook.com/tr?id=1114796387611197&ev=PageView&noscript=1"
     });
   }
 
-  // Las insignias de las tiendas, con la red de origen dentro del enlace
+  // Las insignias de las tiendas, con la red de origen dentro del enlace de Google Play (y para los píxeles)
   const red = redDeOrigen();
   const glifoTienda = t => `<span class="ico-m" style="--src:url('iconos/${t.icono}.svg')" aria-hidden="true"></span>`;
   document.querySelector('.insignias').innerHTML = TIENDAS.map(t => `
@@ -240,17 +215,10 @@ src="https://www.facebook.com/tr?id=1114796387611197&ev=PageView&noscript=1"
       ${glifoTienda(t)}<span class="txt"><small>${t.arriba}</small><b>${t.abajo}</b></span>
     </a>`).join('');
 
-  // Cada toque que abre un enlace se mide en Google Analytics y en el píxel de Meta, con el origen de la visita:
-  // · clic_boton (parámetros boton, destino y red_origen) para los informes;
-  // · kfeel_iphone / kfeel_android, los eventos clave de las tiendas;
-  // · toque_<botón>_<origen> (toque_kpop_tiktok, toque_kfeel_android_instagram…) para el tiempo real,
-  //   que muestra los nombres de los eventos al instante pero no sus parámetros.
-  function medir(boton, href, evento, id) {
-    if (typeof gtag === 'function') {
-      gtag('event', 'clic_boton', { boton, destino: href, red_origen: red, transport_type: 'beacon' });
-      if (evento) gtag('event', evento, { red_origen: red, transport_type: 'beacon' });
-      if (id) gtag('event', `toque_${id}_${red}`, { boton, transport_type: 'beacon' });
-    }
+  // Cada toque que abre un enlace se mide en los píxeles de Meta y TikTok, con el origen de la visita.
+  // En Google Analytics solo se cuentan los toques en las tiendas: kfeel_iphone y kfeel_android.
+  function medir(boton, href, evento) {
+    if (evento && typeof gtag === 'function') gtag('event', evento, { transport_type: 'beacon' });
     // Para los dos píxeles: a dónde lleva el botón decide el evento estándar, el que los anuncios pueden
     // optimizar. Las tiendas de KFeel son donde se compra la entrada; los formularios, un registro.
     const esApp = /apps\.apple\.com|play\.google\.com/.test(href);
@@ -278,13 +246,13 @@ src="https://www.facebook.com/tr?id=1114796387611197&ev=PageView&noscript=1"
     if (!a || e.defaultPrevented) return;
     const href = a.getAttribute('href');
     if (!href || href.startsWith('#')) return;
-    medir(a.querySelector('b').textContent, href, null, a.dataset.id);
+    medir(a.querySelector('b').textContent, href);
   });
 
   // Insignias de las tiendas
   document.querySelector('.insignias').addEventListener('click', e => {
     const a = e.target.closest('.tienda');
-    if (a) medir(a.dataset.boton, a.getAttribute('href'), a.dataset.evento, a.dataset.evento);
+    if (a) medir(a.dataset.boton, a.getAttribute('href'), a.dataset.evento);
   });
 </script>
 </body>

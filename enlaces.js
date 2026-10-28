@@ -1,13 +1,12 @@
 // Los botones de la rueda (formularios).
-// «id» da nombre al evento de tiempo real de cada botón (toque_<id>_<origen>, ver index.html).
 export const BOTONES = [
-  { id: 'expositores', titulo: 'Formulario Expositores', detalle: 'Registro para tener un puesto', url: 'https://docs.google.com/forms/d/e/1FAIpQLSeBt7U1_kzhP4jhPNDD34wx-xxohwMS4JyMyS2vKqWPGKdEZA/viewform', icono: 'puesto.png' },
-  { id: 'voluntarios', titulo: 'Formulario Voluntarios', detalle: 'Logística, prensa o atención', url: 'https://docs.google.com/forms/d/e/1FAIpQLScb_STZoVUkmY5LVGDxjxt8ojrgZl0zchC12yaxvfW9-xwvDw/viewform', icono: 'hand-heart' },
-  { id: 'kpop', titulo: 'Audición grupos K-Pop', detalle: 'Videos hasta el 31 de octubre', url: 'https://docs.google.com/forms/d/e/1FAIpQLSenH1oB6EPAzSZaOwbWKwLs5yh4_4wBGweBWPvAqOtrShM6Ig/viewform', icono: 'microphone', cierra: '2026-10-31' },
+  { titulo: 'Formulario Expositores', detalle: 'Registro para tener un puesto', url: 'https://docs.google.com/forms/d/e/1FAIpQLSeBt7U1_kzhP4jhPNDD34wx-xxohwMS4JyMyS2vKqWPGKdEZA/viewform', icono: 'puesto.png' },
+  { titulo: 'Formulario Voluntarios', detalle: 'Logística, prensa o atención', url: 'https://docs.google.com/forms/d/e/1FAIpQLScb_STZoVUkmY5LVGDxjxt8ojrgZl0zchC12yaxvfW9-xwvDw/viewform', icono: 'hand-heart' },
+  { titulo: 'Audición grupos K-Pop', detalle: 'Videos hasta el 31 de octubre', url: 'https://docs.google.com/forms/d/e/1FAIpQLSenH1oB6EPAzSZaOwbWKwLs5yh4_4wBGweBWPvAqOtrShM6Ig/viewform', icono: 'microphone', cierra: '2026-10-31' },
 ];
 
 // Las dos tiendas de KFeel, fuera de la rueda, como insignias debajo de ella.
-// «titulo» es el nombre que llega a Analytics y Meta (el mismo de antes, para no cortar los informes).
+// «titulo» es el nombre que llega a los píxeles de Meta y TikTok.
 // «evento» es además un evento propio de cada tienda en Analytics: su nombre no cambia aunque cambie el texto
 // del botón, se cuenta sin configurar nada en Analytics y se puede marcar como evento clave.
 export const TIENDAS = [
@@ -19,7 +18,8 @@ export const TIENDAS = [
 // así que mientras esté vacío el enlace de iPhone no se toca.
 export const APPLE_PT = '';
 
-// De dónde llega la visita: solo tres orígenes, «instagram», «tiktok» o «directo».
+// De dónde llega la visita, para los píxeles de Meta y TikTok y el enlace de Google Play (Analytics no lo usa):
+// solo tres orígenes, «instagram», «tiktok» o «directo».
 // Primero la etiqueta utm_source del enlace (/ig y /tt la ponen; Instagram agrega «ig» a los enlaces de la bio),
 // si no, la app que abrió el sitio (TikTok no manda la página de origen, ni siquiera desde un mensaje)
 // y, por último, la página de donde viene. Todo lo demás cuenta como directo. Se guarda para toda la visita.
