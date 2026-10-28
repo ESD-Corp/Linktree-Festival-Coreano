@@ -1,6 +1,6 @@
 # Linktree · Festival Coreano RD 2026
 
-En línea: <https://linktree-festival-coreano.vercel.app>
+En línea: <https://festivalcoreanord.com.do>
 
 Página de enlaces para la bio de Instagram y TikTok del Festival Coreano RD
 (sábado 28 de noviembre de 2026, Explanada Fray Antonio de Montesinos, Malecón de Santo Domingo).
@@ -30,8 +30,8 @@ Después de editar `enlaces.js` o `rueda.js`, sube el número de versión en las
 ## Formularios
 
 Los cinco botones tienen su link. Si alguno se deja sin link (con una `url` que empiece por `#formulario-…`),
-al tocarlo aparece un aviso de que falta el formulario. Después del 20 de octubre de 2026 el botón de
-K-Pop se ve atenuado (convocatoria cerrada).
+al tocarlo aparece un aviso de que falta el formulario. Después del 31 de octubre de 2026 el botón de
+K-Pop se ve atenuado (convocatoria cerrada); la fecha sale de `cierra` en `enlaces.js`.
 
 ## Google Analytics
 
@@ -107,6 +107,26 @@ El tiempo real no muestra la fuente de la visita ni los parámetros, por eso el 
 
 ## Publicar cambios
 
-El sitio está en Vercel (equipo *esd-corp's projects*, proyecto `linktree-festival-coreano`), conectado a este repo:
-cada cambio que se sube a la rama `main` se publica solo en <https://linktree-festival-coreano.vercel.app>
-en unos segundos. Los cambios en otras ramas generan una vista previa aparte, sin tocar el sitio principal.
+**El sitio sale de la rama `produccion`, no de `main`.** Subir algo a `main` no publica nada.
+
+Cada push a `produccion` dispara `.github/workflows/deploy-produccion.yml`, que primero abre la página en un
+navegador de verdad (Playwright): si hay errores de JavaScript, archivos que faltan o la página no muestra
+enlaces, el deploy se detiene ahí y no toca el servidor. Si pasa la prueba, sube los archivos por rsync a
+`/var/www/linktree/` en el servidor (nginx) que responde en <https://festivalcoreanord.com.do>, y al final
+comprueba que el sitio responda. La subida usa `--delay-updates`, así que si falla a mitad el sitio queda como estaba.
+El `README.md`, `.github/` y `.gitignore` no se suben.
+
+Lo de siempre: trabajar en `main` y, cuando está listo, llevarlo a producción.
+
+```bash
+git push origin main:produccion
+```
+
+El workflow también se puede correr a mano desde la pestaña Actions de GitHub (*Run workflow*).
+Para volver atrás, revertir el commit en `produccion` y subirlo.
+
+### Vercel
+
+El proyecto `linktree-festival-coreano` (equipo *esd-corp's projects*) sigue conectado a la rama `main`, pero
+**está pausado**: <https://linktree-festival-coreano.vercel.app> devuelve `503 DEPLOYMENT_PAUSED`. Quedó de
+cuando el sitio vivía ahí. Si alguna vez hace falta esa URL, hay que despausar el proyecto desde el panel de Vercel.
