@@ -50,6 +50,24 @@ cada toque que abre un botón:
 | Formularios (Expositores, Voluntarios, K-Pop) | `Lead` | `ClicBoton` con `boton` y `destino` |
 | KFeel en iPhone / KFeel Android | `InitiateCheckout` (ahí se compra la entrada) | `ClicBoton` con `boton` y `destino` |
 
+## Píxel de TikTok
+
+Píxel del Festival Coreano RD (`DBH21A3C77U8I4RJ18D0`). El código base va en el `<head>`, junto al de Google
+Analytics y al de Meta, y envía `Pageview` al cargar. En cada toque que abre un botón manda los mismos dos
+momentos que Meta, con los nombres del catálogo de TikTok:
+
+| Botón | Evento estándar | Evento propio |
+|---|---|---|
+| Formularios (Expositores, Voluntarios, K-Pop) | `Lead` | `ClicBoton` con `content_name`, `description` y `red_origen` |
+| KFeel en iPhone / KFeel Android | `InitiateCheckout` (ahí se compra la entrada) | `ClicBoton` con `content_name`, `description` y `red_origen` |
+
+Los eventos estándar son los que las campañas de TikTok pueden usar para optimizar: sin ellos, un anuncio
+solo sabe optimizar hacia clics. Los nombres terminan siendo los mismos que en Meta, así que el `ClicBoton`
+y los dos estándar se pueden cruzar botón por botón entre los tres sistemas.
+
+En la documentación de TikTok el evento de los formularios aparece como `SubmitForm`, pero su SDK lo traduce
+a `Lead` antes de enviarlo (así se ve en el Events Manager). Por eso el código manda `Lead` directo.
+
 ## Verla en local
 
 ```bash
