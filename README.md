@@ -18,16 +18,16 @@ La estética sigue las piezas de la campaña (marino liso, logo con contorno bla
 | `enlaces.js` | **El formulario** de Expositores y **las 2 tiendas** de KFeel (texto, link, ícono y foto de cada tarjeta). |
 | `fotos/` | Las fotos de las tarjetas (webp de 1200 px, del fotógrafo del festival 2025). |
 | `comun.css` | Colores y tipografía del sistema visual. |
-| `assets/` | Logo. |
+| `assets/` | Logo y la textura de papel arrugado del fondo (`papel.webp`, se multiplica sobre el marino). |
 | `iconos/` | Íconos de los botones, de las tiendas y el logo de KFeel. El puesto de expositores sale del ícono oficial de la marca; los logos de Apple y Android, de Simple Icons. |
 
 ## Cambiar un enlace
 
 Edita `enlaces.js`. Cada tarjeta tiene `titulo` (el nombre que llega a los píxeles), `arriba` y `nombre`
-(lo que se lee en la tarjeta), `url`, `icono`, `foto` (archivo en `fotos/`, sin extensión) y `encuadre`
+(lo que se lee en la tarjeta; las tiendas llevan además `rotulo`, el texto tal cual se ve, «KFEEL en iPhone»), `url`, `icono`, `foto` (archivo en `fotos/`, sin extensión) y `encuadre`
 (qué parte de la foto se ve, como `object-position`).
 Después de editar `enlaces.js`, sube el número de versión en la línea `import` de
-`index.html` (`?v=13` → `?v=14`) para que los navegadores no usen la copia vieja guardada.
+`index.html` (`?v=14` → `?v=15`) para que los navegadores no usen la copia vieja guardada.
 
 ## Formularios
 

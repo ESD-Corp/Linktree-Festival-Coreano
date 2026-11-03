@@ -57,15 +57,16 @@ fbq('track', 'PageView');
 <link href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;700;800;900&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="comun.css">
 <style>
-  /* Linktree del Festival Coreano RD 2026 · versión E1 «Cartel compacto», con tarjetas con foto.
-     Marino liso, logo con contorno blanco arriba a la derecha, trazos rojos de impacto y stickers rojos con borde blanco. */
-  body { display: grid; position: relative; isolation: isolate; background-color: var(--marino); color: var(--blanco); }
+  /* Linktree del Festival Coreano RD 2026 · versión E1 «Cartel compacto», con tarjetas con foto (diseño del SVG del 3 nov).
+     Marino sobre papel arrugado, logo con contorno blanco arriba a la derecha, trazos rojos de impacto y stickers rojos con borde blanco. */
+  body { display: grid; position: relative; isolation: isolate; color: var(--blanco);
+    background: var(--marino) url('assets/papel.webp') center / cover; background-blend-mode: multiply; }
   .impacto { position: relative; display: inline-block; width: 26px; height: 30px; vertical-align: top; margin-left: 6px; }
   .impacto i { position: absolute; left: 4px; width: 18px; height: 4px; border-radius: 4px; background: var(--rojo); transform-origin: left center; }
   .impacto i:nth-child(1) { top: 4px; transform: rotate(-32deg); }
   .impacto i:nth-child(2) { top: 14px; }
   .impacto i:nth-child(3) { top: 24px; transform: rotate(32deg); }
-  header { position: relative; padding: 86px 24px 0; }
+  header { position: relative; padding: 42px 24px 0; }
   h1 { margin: 0; text-transform: uppercase; font-size: clamp(30px, 9vw, 36px); font-weight: 900; line-height: .94; letter-spacing: -0.02em; }
   h1 span { display: block; }
   h1 .l2 { color: var(--rojo); }
@@ -73,50 +74,62 @@ fbq('track', 'PageView');
     filter: drop-shadow(2px 0 0 #fff) drop-shadow(-2px 0 0 #fff) drop-shadow(0 2px 0 #fff) drop-shadow(0 -2px 0 #fff); }
 
   /* las tarjetas con foto ocupan el alto que sobra, repartido en partes iguales: no quedan huecos muertos */
-  .tarjetas { min-height: 0; display: grid; grid-template-rows: repeat(3, minmax(0, 1fr)); gap: 12px; padding: 18px 24px 0; }
+  .tarjetas { min-height: 0; display: grid; grid-template-rows: repeat(3, minmax(0, 1fr)); gap: 12px; padding: 55px 24px 0; }
   .tarjeta { position: relative; min-height: 0; overflow: hidden; isolation: isolate; display: flex; align-items: flex-end;
     border: 3px solid var(--blanco); border-radius: 20px; background: var(--humo); box-shadow: 0 5px 0 rgb(10 18 45 / .45);
     transition: scale 140ms ease-out; }
-  .tarjeta img { position: absolute; inset: 0; z-index: -2; width: 100%; height: 100%; object-fit: cover; }
-  /* velo marino abajo para que el texto se lea sobre cualquier foto */
-  .tarjeta::before { content: ""; position: absolute; inset: 0; z-index: -1;
+  .tarjeta > img { position: absolute; inset: 0; z-index: -2; width: 100%; height: 100%; object-fit: cover; }
+  /* velo marino arriba y abajo (abajo, doble) para que el texto y la insignia se lean sobre cualquier foto */
+  .tarjeta::before, .tarjeta::after { content: ""; position: absolute; inset: 0; z-index: -1;
     background: linear-gradient(to top, rgb(20 29 58 / .92) 0, rgb(20 29 58 / .55) 42%, rgb(20 29 58 / 0) 72%); }
+  .tarjeta::before { background: linear-gradient(to bottom, rgb(20 29 58 / .92) 0, rgb(20 29 58 / .55) 42%, rgb(20 29 58 / 0) 72%),
+    linear-gradient(to top, rgb(20 29 58 / .92) 0, rgb(20 29 58 / .55) 42%, rgb(20 29 58 / 0) 72%); }
+  .tarjeta::after { opacity: .54; }
   .pie { display: flex; align-items: center; gap: 12px; width: 100%; padding: 0 14px 12px; }
-  .disco { flex: none; width: 42px; height: 42px; border-radius: 50%; display: grid; place-items: center; background: var(--rojo); color: var(--blanco);
-    box-shadow: 0 0 0 2.5px var(--blanco); }
+  .disco { flex: none; width: 42px; height: 42px; border-radius: 50%; display: grid; place-items: center; background: var(--marino); color: var(--blanco);
+    box-shadow: 0 0 0 1.3px var(--blanco); }
+  /* en las tiendas va el ícono de KFeel en lugar del disco, y la tienda en una insignia blanca arriba a la derecha */
+  .disco.app { background: none; box-shadow: none; place-items: start end; }
+  .disco.app img { width: 37px; height: 37px; border-radius: 9.3px; box-shadow: 0 0 0 .7px var(--blanco); translate: 1px -4px; }
+  .insignia { position: absolute; top: 9px; right: 9px; width: 25px; height: 25px; border-radius: 50%; display: grid; place-items: center;
+    background: var(--blanco); color: var(--rojo); box-shadow: inset 0 0 0 1.2px var(--blanco), inset 0 0 0 1.55px var(--rojo); }
+  .insignia .ico-m { width: 12.8px; height: 12.8px; }
   .disco .ico-m { width: 24px; height: 24px; }
   .pie .txt { min-width: 0; flex: 1; line-height: 1.1; }
   .pie small { display: block; font-size: 12px; font-weight: 700; color: var(--crema); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
   .pie b { display: block; font-size: clamp(19px, 5.6vw, 23px); font-weight: 900; text-transform: uppercase; letter-spacing: -.01em; white-space: nowrap; }
+  .tienda .pie b { font-size: clamp(17px, 5.07vw, 21px); text-transform: none; }
   .flecha { flex: none; font-size: 22px; font-weight: 900; }
   .tarjeta.cerrado { opacity: .55; }
   .tarjeta:active { scale: 0.97; }
   .tarjeta:focus-visible { outline: 3px solid var(--crema); outline-offset: 3px; }
-  .kfeel-mini { display: inline-flex; align-items: center; gap: 5px; white-space: nowrap; vertical-align: middle; }
-  .kfeel-mini img { width: 20px; height: 20px; border-radius: 5px; box-shadow: 0 0 0 1.5px var(--blanco); display: block; }
   .sticker { flex: none; padding: 1px 9px 2px; border: 2.5px solid var(--blanco); border-radius: 10px; background: var(--rojo); color: var(--blanco);
     font-size: 16px; font-weight: 900; line-height: 1.15; box-shadow: 0 3px 0 rgb(10 18 45 / .45); }
   [data-contador][hidden] { display: none !important; }
   .entrada { margin: 0; display: flex; align-items: center; justify-content: center; gap: 10px; font-size: 13px; font-weight: 700; color: var(--crema); }
 
   body { grid-template-rows: auto minmax(0, 1fr) auto; }
-  /* el contador usa la franja vacía junto al logo */
-  .contador { position: absolute; top: 16px; left: 24px; display: flex; align-items: baseline; gap: 6px;
-    padding: 6px 14px 7px; border-radius: 14px; background: var(--crema); color: var(--marino);
-    font-size: 15px; font-weight: 800; box-shadow: 0 4px 0 var(--rojo); rotate: -2deg; }
-  .contador strong { font-size: 30px; font-weight: 900; line-height: 1; letter-spacing: -.02em; color: var(--rojo); }
-  header { padding-top: 104px; } /* franja más alta: el contador respira sobre el titular */
-  .bajada { margin: 7.84px 0 0; } /* espacio entre el titular y la fecha: 14 px, -30 % y luego -20 % */
-  .dia { font-size: clamp(14px, 4.2vw, 16px); font-weight: 900; text-transform: uppercase; line-height: 1.15; }
+  /* el contador va bajo el logo, inclinado como un sticker */
+  .contador { position: absolute; top: 127.5px; right: 24px; margin: 0; display: flex; align-items: baseline; gap: 3.5px;
+    padding: 3.5px 8px 4px; border-radius: 999px; background: var(--crema); color: var(--marino);
+    font-size: 10px; font-weight: 800; box-shadow: 0 2.5px 0 var(--rojo); rotate: -12deg; }
+  .contador strong { font-size: 20px; font-weight: 900; line-height: 1; letter-spacing: -.02em; color: var(--rojo); }
+  .bajada { margin: 2px 0 0; }
+  /* la fecha, espaciada, ocupa el mismo ancho que «DEL FESTIVAL!» (su tamaño sigue al del titular) */
+  .dia { font-size: clamp(13.2px, 3.97vw, 15.9px); font-weight: 900; text-transform: uppercase; letter-spacing: .07em; line-height: 1.15; }
   /* abajo, el lugar y el precio de la entrada, centrados */
-  .cierre { padding: 16px 24px max(28px, calc(env(safe-area-inset-bottom) + 14px)); text-align: center; }
-  .lugar { margin: 0 0 12px; font-size: 13.8px; line-height: 1.35; color: var(--crema); } /* 15 % más grande que los 12 px de antes */
-  @media (max-height: 700px) { body > header { padding-top: 92px; } .tarjetas { gap: 10px; padding-top: 14px; } .cierre { padding-top: 12px; padding-bottom: max(20px, calc(env(safe-area-inset-bottom) + 10px)); } .lugar { margin-bottom: 8px; } .contador { top: 12px; } .contador strong { font-size: 24px; } }
-
+  .cierre { padding: 26px 24px max(42px, calc(env(safe-area-inset-bottom) + 28px)); text-align: center; }
+  .lugar { margin: 0 0 18.5px; font-size: 13.8px; line-height: 1.35; color: var(--crema); } /* 15 % más grande que los 12 px de antes */
+  /* pantallas bajas: todo más compacto y el contador sube junto a la fecha, a la derecha */
   @media (max-height: 700px) {
-    header { padding-top: 76px; }
+    header { padding-top: 30px; }
     .logo { width: 74px; top: 10px; }
     h1 { font-size: 29px; }
+    .dia { font-size: 12.8px; }
+    .contador { top: 82px; }
+    .tarjetas { gap: 10px; padding-top: 26px; }
+    .cierre { padding-top: 16px; padding-bottom: max(20px, calc(env(safe-area-inset-bottom) + 10px)); }
+    .lugar { margin-bottom: 10px; }
   }
 </style>
 </head>
@@ -135,24 +148,25 @@ src="https://www.facebook.com/tr?id=1114796387611197&ev=PageView&noscript=1"
   <main class="tarjetas" aria-label="Formulario de expositores y descarga de KFeel"></main>
   <footer class="cierre entra" style="--n:6">
     <p class="lugar">Explanada Fray Antonio de Montesinos,<br>Malecón de Santo Domingo</p>
-    <p class="entrada"><span class="sticker" aria-label="Entrada: 9.99 dólares">US$9.99</span><span>Tu entrada, en la app <span class="kfeel-mini"><img src="iconos/kfeel.png" alt="" width="20" height="20">KFeel</span></span></p>
+    <p class="entrada"><span class="sticker" aria-label="Entrada: 9.99 dólares">US$9.99</span><span>Tu entrada, en KFeel</span></p>
   </footer>
 
 
 <script type="module">
-  import { BOTONES, TIENDAS, externo, plazo, avisarPendientes, redDeOrigen, enlaceTienda } from './enlaces.js?v=13';
+  import { BOTONES, TIENDAS, externo, plazo, avisarPendientes, redDeOrigen, enlaceTienda } from './enlaces.js?v=14';
   avisarPendientes();
 
-  // Los íconos van en blanco dentro de un círculo rojo, como en "¿Cómo acceder?"
+  // El ícono del formulario va en blanco dentro de un círculo marino; el de cada tienda, en rojo dentro de su insignia
   // (el puesto de expositores sale del ícono oficial de la marca, recortado como silueta en PNG)
   const glifo = e => `<span class="ico-m" style="--src:url('iconos/${e.icono.includes('.') ? e.icono : e.icono + '.svg'}')" aria-hidden="true"></span>`;
 
   // Las tiendas llevan la red de origen dentro del enlace de Google Play (y para los píxeles)
   const red = redDeOrigen();
   const tarjeta = (e, n, href, evento) => `
-    <a class="tarjeta entra${plazo(e)?.cerrado ? ' cerrado' : ''}" style="--n:${n}" href="${href}"${externo(e)} data-boton="${e.titulo}"${evento ? ` data-evento="${evento}"` : ''} aria-label="${e.nombre}: ${e.arriba}">
+    <a class="tarjeta entra${e.evento ? ' tienda' : ''}${plazo(e)?.cerrado ? ' cerrado' : ''}" style="--n:${n}" href="${href}"${externo(e)} data-boton="${e.titulo}"${evento ? ` data-evento="${evento}"` : ''} aria-label="${e.nombre}: ${e.arriba}">
       <img src="fotos/${e.foto}.webp" alt="" style="object-position:${e.encuadre}" decoding="async">
-      <span class="pie"><span class="disco">${glifo(e)}</span><span class="txt"><small>${e.arriba}</small><b>${e.nombre}</b></span><span class="flecha" aria-hidden="true">→</span></span>
+      ${e.evento ? `<span class="insignia">${glifo(e)}</span>` : ''}
+      <span class="pie">${e.evento ? '<span class="disco app"><img src="iconos/kfeel.png" alt="" width="37" height="37"></span>' : `<span class="disco">${glifo(e)}</span>`}<span class="txt"><small>${e.arriba}</small><b>${e.rotulo ?? e.nombre}</b></span><span class="flecha" aria-hidden="true">→</span></span>
     </a>`;
   const tarjetas = document.querySelector('.tarjetas');
   tarjetas.innerHTML = [...BOTONES.map(e => tarjeta(e, 3, e.url)), ...TIENDAS.map((t, i) => tarjeta(t, 4 + i, enlaceTienda(t, red), t.evento))].join('');

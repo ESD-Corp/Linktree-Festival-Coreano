@@ -1,5 +1,6 @@
 // Las tarjetas con foto. Primero los formularios; «foto» es el archivo en fotos/ y «encuadre» el object-position de la foto.
-// «titulo» es el nombre que llega a los píxeles de Meta y TikTok; «arriba» y «nombre» son lo que se lee en la tarjeta.
+// «titulo» es el nombre que llega a los píxeles de Meta y TikTok; «arriba» y «nombre» son lo que se lee en la tarjeta
+// («rotulo», si está, reemplaza a «nombre» en la tarjeta tal cual, sin pasarlo a mayúsculas).
 export const BOTONES = [
   { titulo: 'Formulario Expositores', arriba: 'Formulario', nombre: 'Expositores', url: 'https://docs.google.com/forms/d/e/1FAIpQLSeBt7U1_kzhP4jhPNDD34wx-xxohwMS4JyMyS2vKqWPGKdEZA/viewform', icono: 'puesto.png', foto: 'expositores', encuadre: '30% 25%' },
 ];
@@ -8,8 +9,8 @@ export const BOTONES = [
 // «evento» es además un evento propio de cada tienda en Analytics: su nombre no cambia aunque cambie el texto
 // del botón, se cuenta sin configurar nada en Analytics y se puede marcar como evento clave.
 export const TIENDAS = [
-  { titulo: 'KFeel en iPhone', evento: 'kfeel_iphone', arriba: 'Descárgalo en el App Store', nombre: 'KFeel en iPhone', url: 'https://apps.apple.com/do/app/kfeel/id6810140328', icono: 'apple', foto: 'iphone', encuadre: '62% 40%' },
-  { titulo: 'KFeel Android', evento: 'kfeel_android', arriba: 'Disponible en Google Play', nombre: 'KFeel en Android', url: 'https://play.google.com/store/apps/details?id=app.kfeel', icono: 'android', foto: 'android', encuadre: '45% 55%' },
+  { titulo: 'KFeel en iPhone', evento: 'kfeel_iphone', arriba: 'App Store', nombre: 'KFeel en iPhone', rotulo: 'KFEEL en iPhone', url: 'https://apps.apple.com/do/app/kfeel/id6810140328', icono: 'apple', foto: 'iphone', encuadre: '62% 40%' },
+  { titulo: 'KFeel Android', evento: 'kfeel_android', arriba: 'Google Play', nombre: 'KFeel en Android', rotulo: 'KFEEL en Android', url: 'https://play.google.com/store/apps/details?id=app.kfeel', icono: 'android', foto: 'android', encuadre: '45% 55%' },
 ];
 
 // Código de proveedor (pt) de la cuenta de KFeel en App Store Connect. Sin él, Apple ignora la campaña,
