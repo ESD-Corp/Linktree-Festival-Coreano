@@ -5,16 +5,16 @@ En línea: <https://festivalcoreanord.com.do>
 Página de enlaces para la bio de Instagram y TikTok del Festival Coreano RD
 (sábado 28 de noviembre de 2026, Explanada Fray Antonio de Montesinos, Malecón de Santo Domingo).
 
-Arriba, el contador de días junto al logo, el titular y la fecha con el lugar. Debajo, tres tarjetas grandes con foto
-del festival 2025: el formulario de Expositores y, después del precio de la entrada, KFeel en iPhone (App Store) y
-KFeel en Android (Google Play). Las tarjetas se reparten el alto de la pantalla, así que todo cabe sin hacer scroll.
+Arriba, el contador de días junto al logo, el titular y la fecha. Debajo, tres tarjetas grandes con foto
+del festival 2025: el formulario de Expositores, KFeel en iPhone (App Store) y KFeel en Android (Google Play).
+Al final, el lugar y el precio de la entrada. Las tarjetas se reparten el alto de la pantalla, así que todo cabe sin hacer scroll.
 La estética sigue las piezas de la campaña (marino liso, logo con contorno blanco, trazos rojos, etiqueta roja tipo sticker).
 
 ## Archivos
 
 | Archivo | Qué hace |
 |---|---|
-| `index.html` | La página: contador, titular, fecha y lugar, y las tarjetas con foto con el precio de la entrada. |
+| `index.html` | La página: contador, titular, fecha, tarjetas con foto, lugar y precio de la entrada. |
 | `enlaces.js` | **El formulario** de Expositores y **las 2 tiendas** de KFeel (texto, link, ícono y foto de cada tarjeta). |
 | `fotos/` | Las fotos de las tarjetas (webp de 1200 px, del fotógrafo del festival 2025). |
 | `comun.css` | Colores y tipografía del sistema visual. |
