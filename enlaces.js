@@ -1,17 +1,15 @@
-// Los botones de la rueda (formularios).
+// Las tarjetas con foto. Primero los formularios; «foto» es el archivo en fotos/ y «encuadre» el object-position de la foto.
+// «titulo» es el nombre que llega a los píxeles de Meta y TikTok; «arriba» y «nombre» son lo que se lee en la tarjeta.
 export const BOTONES = [
-  { titulo: 'Formulario Expositores', detalle: 'Registro para tener un puesto', url: 'https://docs.google.com/forms/d/e/1FAIpQLSeBt7U1_kzhP4jhPNDD34wx-xxohwMS4JyMyS2vKqWPGKdEZA/viewform', icono: 'puesto.png' },
-  { titulo: 'Formulario Voluntarios', detalle: 'Logística, prensa o atención', url: 'https://docs.google.com/forms/d/e/1FAIpQLScb_STZoVUkmY5LVGDxjxt8ojrgZl0zchC12yaxvfW9-xwvDw/viewform', icono: 'hand-heart' },
-  { titulo: 'Audición grupos K-Pop', detalle: 'Videos hasta el 31 de octubre', url: 'https://docs.google.com/forms/d/e/1FAIpQLSenH1oB6EPAzSZaOwbWKwLs5yh4_4wBGweBWPvAqOtrShM6Ig/viewform', icono: 'microphone', cierra: '2026-10-31' },
+  { titulo: 'Formulario Expositores', arriba: 'Formulario', nombre: 'Expositores', url: 'https://docs.google.com/forms/d/e/1FAIpQLSeBt7U1_kzhP4jhPNDD34wx-xxohwMS4JyMyS2vKqWPGKdEZA/viewform', icono: 'puesto.png', foto: 'expositores', encuadre: '30% 25%' },
 ];
 
-// Las dos tiendas de KFeel, fuera de la rueda, como insignias debajo de ella.
-// «titulo» es el nombre que llega a los píxeles de Meta y TikTok.
+// Las dos tiendas de KFeel, también como tarjetas con foto, debajo del precio de la entrada.
 // «evento» es además un evento propio de cada tienda en Analytics: su nombre no cambia aunque cambie el texto
 // del botón, se cuenta sin configurar nada en Analytics y se puede marcar como evento clave.
 export const TIENDAS = [
-  { titulo: 'KFeel en iPhone', evento: 'kfeel_iphone', arriba: 'Descárgalo en el', abajo: 'App Store', url: 'https://apps.apple.com/do/app/kfeel/id6810140328', icono: 'apple' },
-  { titulo: 'KFeel Android', evento: 'kfeel_android', arriba: 'Disponible en', abajo: 'Google Play', url: 'https://play.google.com/store/apps/details?id=app.kfeel', icono: 'googleplay' },
+  { titulo: 'KFeel en iPhone', evento: 'kfeel_iphone', arriba: 'Descárgalo en el App Store', nombre: 'KFeel en iPhone', url: 'https://apps.apple.com/do/app/kfeel/id6810140328', icono: 'apple', foto: 'iphone', encuadre: '62% 40%' },
+  { titulo: 'KFeel Android', evento: 'kfeel_android', arriba: 'Disponible en Google Play', nombre: 'KFeel en Android', url: 'https://play.google.com/store/apps/details?id=app.kfeel', icono: 'android', foto: 'android', encuadre: '45% 55%' },
 ];
 
 // Código de proveedor (pt) de la cuenta de KFeel en App Store Connect. Sin él, Apple ignora la campaña,
@@ -63,18 +61,6 @@ export function plazo(e, hoy = new Date()) {
   if (dias === 0) return { texto: 'Cierra hoy', dias };
   if (dias === 1) return { texto: 'Cierra mañana', dias };
   return { texto: `Cierra en ${dias} días`, dias };
-}
-
-// Una vibración muy corta cuando la rueda encaja en otro botón, solo mientras la persona la mueve
-export function vibrarAlCambiar(obtenerRueda, N) {
-  let anterior = null;
-  return p => {
-    const i = ((Math.round(p) % N) + N) % N;
-    if (i === anterior) return;
-    const r = obtenerRueda();
-    if (anterior !== null && r && r.modo === 'arrastre' && navigator.vibrate) navigator.vibrate(6);
-    anterior = i;
-  };
 }
 
 // Si algún botón vuelve a quedar sin link (url "#formulario-…"), tocarlo muestra un aviso en vez de no hacer nada

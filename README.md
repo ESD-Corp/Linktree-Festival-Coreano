@@ -5,33 +5,35 @@ En línea: <https://festivalcoreanord.com.do>
 Página de enlaces para la bio de Instagram y TikTok del Festival Coreano RD
 (sábado 28 de noviembre de 2026, Explanada Fray Antonio de Montesinos, Malecón de Santo Domingo).
 
-Arriba, el contador de días junto al logo, el titular y la fecha con el lugar. Los tres formularios van en un tambor:
-el que queda en el centro se vuelve una etiqueta roja. Abajo, el precio de la entrada y las insignias de KFeel (App Store y Google Play).
-El tambor está quieto y se mueve con el dedo, la rueda del mouse o las flechas del teclado.
+Arriba, el contador de días junto al logo, el titular y la fecha con el lugar. Debajo, tres tarjetas grandes con foto
+del festival 2025: el formulario de Expositores y, después del precio de la entrada, KFeel en iPhone (App Store) y
+KFeel en Android (Google Play). Las tarjetas se reparten el alto de la pantalla, así que todo cabe sin hacer scroll.
 La estética sigue las piezas de la campaña (marino liso, logo con contorno blanco, trazos rojos, etiqueta roja tipo sticker).
 
 ## Archivos
 
 | Archivo | Qué hace |
 |---|---|
-| `index.html` | La página: contador, titular, fecha y lugar, tambor, entrada e insignias de KFeel. |
-| `enlaces.js` | **Los 3 formularios** del tambor y **las 2 tiendas** de KFeel (texto, link e ícono), y el cierre de la audición de K-Pop. |
-| `rueda.js` | El movimiento del tambor: giro automático, arrastre con inercia, rueda del mouse y teclado. |
+| `index.html` | La página: contador, titular, fecha y lugar, y las tarjetas con foto con el precio de la entrada. |
+| `enlaces.js` | **El formulario** de Expositores y **las 2 tiendas** de KFeel (texto, link, ícono y foto de cada tarjeta). |
+| `fotos/` | Las fotos de las tarjetas (webp de 1200 px, del fotógrafo del festival 2025). |
 | `comun.css` | Colores y tipografía del sistema visual. |
 | `assets/` | Logo. |
 | `iconos/` | Íconos de los botones, de las tiendas y el logo de KFeel. El puesto de expositores sale del ícono oficial de la marca; los logos de Apple y Android, de Simple Icons. |
 
 ## Cambiar un enlace
 
-Edita `enlaces.js`. Cada botón tiene `titulo`, `detalle`, `url` e `icono`.
-Después de editar `enlaces.js` o `rueda.js`, sube el número de versión en las dos líneas `import` de
-`index.html` (`?v=1` → `?v=2`) para que los navegadores no usen la copia vieja guardada.
+Edita `enlaces.js`. Cada tarjeta tiene `titulo` (el nombre que llega a los píxeles), `arriba` y `nombre`
+(lo que se lee en la tarjeta), `url`, `icono`, `foto` (archivo en `fotos/`, sin extensión) y `encuadre`
+(qué parte de la foto se ve, como `object-position`).
+Después de editar `enlaces.js`, sube el número de versión en la línea `import` de
+`index.html` (`?v=13` → `?v=14`) para que los navegadores no usen la copia vieja guardada.
 
 ## Formularios
 
-Los cinco botones tienen su link. Si alguno se deja sin link (con una `url` que empiece por `#formulario-…`),
-al tocarlo aparece un aviso de que falta el formulario. Después del 31 de octubre de 2026 el botón de
-K-Pop se ve atenuado (convocatoria cerrada); la fecha sale de `cierra` en `enlaces.js`.
+Desde el 2 de noviembre de 2026 solo queda el de Expositores; los de Voluntarios y Audición grupos K-Pop se quitaron.
+Si una tarjeta se deja sin link (con una `url` que empiece por `#formulario-…`), al tocarla aparece un aviso de que
+falta el formulario. Si un formulario lleva `cierra: 'AAAA-MM-DD'` en `enlaces.js`, su tarjeta se ve atenuada después de esa fecha.
 
 ## Google Analytics
 
@@ -46,7 +48,7 @@ cada toque que abre un botón:
 
 | Botón | Evento estándar | Evento propio |
 |---|---|---|
-| Formularios (Expositores, Voluntarios, K-Pop) | `Lead` | `ClicBoton` con `boton` y `destino` |
+| Formulario Expositores | `Lead` | `ClicBoton` con `boton` y `destino` |
 | KFeel en iPhone / KFeel Android | `InitiateCheckout` (ahí se compra la entrada) | `ClicBoton` con `boton` y `destino` |
 
 ## Píxel de TikTok
@@ -57,7 +59,7 @@ momentos que Meta, con los nombres del catálogo de TikTok:
 
 | Botón | Evento estándar | Evento propio |
 |---|---|---|
-| Formularios (Expositores, Voluntarios, K-Pop) | `Lead` | `ClicBoton` con `content_name`, `description` y `red_origen` |
+| Formulario Expositores | `Lead` | `ClicBoton` con `content_name`, `description` y `red_origen` |
 | KFeel en iPhone / KFeel Android | `InitiateCheckout` (ahí se compra la entrada) | `ClicBoton` con `content_name`, `description` y `red_origen` |
 
 Los eventos estándar son los que las campañas de TikTok pueden usar para optimizar: sin ellos, un anuncio

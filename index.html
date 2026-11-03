@@ -57,7 +57,7 @@ fbq('track', 'PageView');
 <link href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;700;800;900&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="comun.css">
 <style>
-  /* Linktree del Festival Coreano RD 2026 · versión E1 «Cartel compacto».
+  /* Linktree del Festival Coreano RD 2026 · versión E1 «Cartel compacto», con tarjetas con foto.
      Marino liso, logo con contorno blanco arriba a la derecha, trazos rojos de impacto y stickers rojos con borde blanco. */
   body { display: grid; position: relative; isolation: isolate; background-color: var(--marino); color: var(--blanco); }
   .impacto { position: relative; display: inline-block; width: 26px; height: 30px; vertical-align: top; margin-left: 6px; }
@@ -72,43 +72,35 @@ fbq('track', 'PageView');
   .logo { position: absolute; top: 14px; right: 18px; width: 84px; height: auto;
     filter: drop-shadow(2px 0 0 #fff) drop-shadow(-2px 0 0 #fff) drop-shadow(0 2px 0 #fff) drop-shadow(0 -2px 0 #fff); }
 
-  /* la rueda ocupa el alto que sobra: no quedan huecos muertos */
-  .escenario { perspective: 760px; min-height: 0; }
-  .item { top: 50%; left: 50%; width: min(344px, calc(100vw - 32px)); height: 56px;
-    display: flex; justify-content: center; gap: 12px; align-items: center; padding: 0 14px; /* ícono y texto centrados juntos en el botón */
-    border: 3px solid var(--blanco); border-radius: 18px; background: var(--blanco); color: var(--marino);
-    backface-visibility: hidden; transition: background-color 220ms ease, color 220ms ease, box-shadow 220ms ease; }
-  .disco { width: 40px; height: 40px; border-radius: 50%; display: grid; place-items: center; background: var(--rojo); color: var(--blanco); transition: background-color 220ms ease, color 220ms ease; }
+  /* las tarjetas con foto ocupan el alto que sobra, repartido en partes iguales: no quedan huecos muertos */
+  .tarjetas { min-height: 0; display: grid; grid-template-rows: minmax(0, 1fr) auto minmax(0, 1fr) minmax(0, 1fr); gap: 12px;
+    padding: 18px 24px max(28px, calc(env(safe-area-inset-bottom) + 14px)); }
+  .tarjeta { position: relative; min-height: 0; overflow: hidden; isolation: isolate; display: flex; align-items: flex-end;
+    border: 3px solid var(--blanco); border-radius: 20px; background: var(--humo); box-shadow: 0 5px 0 rgb(10 18 45 / .45);
+    transition: scale 140ms ease-out; }
+  .tarjeta img { position: absolute; inset: 0; z-index: -2; width: 100%; height: 100%; object-fit: cover; }
+  /* velo marino abajo para que el texto se lea sobre cualquier foto */
+  .tarjeta::before { content: ""; position: absolute; inset: 0; z-index: -1;
+    background: linear-gradient(to top, rgb(20 29 58 / .92) 0, rgb(20 29 58 / .55) 42%, rgb(20 29 58 / 0) 72%); }
+  .pie { display: flex; align-items: center; gap: 12px; width: 100%; padding: 0 14px 12px; }
+  .disco { flex: none; width: 42px; height: 42px; border-radius: 50%; display: grid; place-items: center; background: var(--rojo); color: var(--blanco);
+    box-shadow: 0 0 0 2.5px var(--blanco); }
   .disco .ico-m { width: 24px; height: 24px; }
-  .txt { min-width: 0; }
-  .item .disco { flex: none; }
-  .item .txt { flex: 0 1 auto; }
-  .txt b { display: block; font-size: 17px; font-weight: 800; line-height: 1.15; white-space: nowrap; }
-  .item.activo { background: var(--rojo); color: var(--blanco); box-shadow: 0 6px 0 rgb(10 18 45 / .45); }
-  .item.activo .disco { background: var(--blanco); color: var(--rojo); }
-  .item.cerrado { opacity: .55; }
-  .item:active { scale: 0.97; }
-  .item:focus-visible { outline-color: var(--crema); }
-
-  /* insignias de tienda, negras como las oficiales */
-  .insignias { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
-  .tienda { display: flex; align-items: center; justify-content: center; gap: 8px; height: 52px; padding: 0 10px; border-radius: 11px;
-    background: #000; border: 1.5px solid #a6a6a6; color: #fff;
-    font-family: -apple-system, "SF Pro Text", "Helvetica Neue", Roboto, system-ui, sans-serif; transition: scale 140ms ease-out; }
-  .tienda .ico-m { flex: none; width: 26px; height: 26px; }
-  .tienda span.txt { min-width: 0; line-height: 1.05; }
-  .tienda small { display: block; font-size: 10px; font-weight: 500; letter-spacing: .01em; white-space: nowrap; }
-  .tienda b { display: block; font-size: clamp(15px, 4.6vw, 19px); font-weight: 600; letter-spacing: -.01em; white-space: nowrap; }
-  .tienda:active { scale: 0.97; }
-  .tienda:focus-visible { outline: 3px solid var(--crema); outline-offset: 3px; }
+  .pie .txt { min-width: 0; flex: 1; line-height: 1.1; }
+  .pie small { display: block; font-size: 12px; font-weight: 700; color: var(--crema); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .pie b { display: block; font-size: clamp(19px, 5.6vw, 23px); font-weight: 900; text-transform: uppercase; letter-spacing: -.01em; white-space: nowrap; }
+  .flecha { flex: none; font-size: 22px; font-weight: 900; }
+  .tarjeta.cerrado { opacity: .55; }
+  .tarjeta:active { scale: 0.97; }
+  .tarjeta:focus-visible { outline: 3px solid var(--crema); outline-offset: 3px; }
   .kfeel-mini { display: inline-flex; align-items: center; gap: 5px; white-space: nowrap; vertical-align: middle; }
   .kfeel-mini img { width: 20px; height: 20px; border-radius: 5px; box-shadow: 0 0 0 1.5px var(--blanco); display: block; }
   .sticker { flex: none; padding: 1px 9px 2px; border: 2.5px solid var(--blanco); border-radius: 10px; background: var(--rojo); color: var(--blanco);
     font-size: 16px; font-weight: 900; line-height: 1.15; box-shadow: 0 3px 0 rgb(10 18 45 / .45); }
   [data-contador][hidden] { display: none !important; }
-  .entrada { margin: 0 0 10px; display: flex; align-items: center; justify-content: center; gap: 10px; font-size: 13px; font-weight: 700; color: var(--crema); }
+  .entrada { margin: 0; display: flex; align-items: center; justify-content: center; gap: 10px; font-size: 13px; font-weight: 700; color: var(--crema); }
 
-  body { grid-template-rows: auto minmax(0, 1fr) auto; }
+  body { grid-template-rows: auto minmax(0, 1fr); }
   /* el contador usa la franja vacía junto al logo */
   .contador { position: absolute; top: 16px; left: 24px; display: flex; align-items: baseline; gap: 6px;
     padding: 6px 14px 7px; border-radius: 14px; background: var(--crema); color: var(--marino);
@@ -118,10 +110,7 @@ fbq('track', 'PageView');
   .bajada { margin: 14px 0 0; }
   .dia { font-size: clamp(14px, 4.2vw, 16px); font-weight: 900; text-transform: uppercase; line-height: 1.15; }
   .lugar { margin-top: 3px; font-size: 12px; line-height: 1.35; color: var(--crema); }
-  .tiendas { padding: 6px 24px max(36px, calc(env(safe-area-inset-bottom) + 16px)); } /* más aire bajo las insignias */
-  /* teléfonos plegables abiertos: los botones de la rueda ocupan todo el ancho, alineados con el titular y las tiendas */
-  @media (min-width: 600px) { .item { width: calc(100vw - 48px); } }
-  @media (max-height: 700px) { body > header { padding-top: 92px; } .tiendas { padding-bottom: max(26px, calc(env(safe-area-inset-bottom) + 12px)); } .contador { top: 12px; } .contador strong { font-size: 24px; } }
+  @media (max-height: 700px) { body > header { padding-top: 92px; } .tarjetas { gap: 10px; padding-top: 14px; padding-bottom: max(20px, calc(env(safe-area-inset-bottom) + 10px)); } .contador { top: 12px; } .contador strong { font-size: 24px; } }
 
   @media (max-height: 700px) {
     header { padding-top: 76px; }
@@ -142,56 +131,29 @@ src="https://www.facebook.com/tr?id=1114796387611197&ev=PageView&noscript=1"
     <h1><span class="l1 entra" style="--n:0">¡Sé parte<span class="impacto" aria-hidden="true"><i></i><i></i><i></i></span></span><span class="l2 entra" style="--n:1">del festival!</span></h1>
     <div class="bajada entra" style="--n:2"><p class="dia" style="margin:0">Sábado 28 de noviembre</p><p class="lugar" style="margin:3px 0 0">Explanada Fray Antonio de Montesinos,<br>Malecón de Santo Domingo</p></div>
   </header>
-  <nav class="escenario entra" style="--n:3" aria-label="Formularios del festival"></nav>
-  <section class="tiendas entra" style="--n:4" aria-label="Descargar KFeel"><p class="entrada"><span class="sticker" aria-label="Entrada: 9.99 dólares">US$9.99</span><span>Tu entrada, en la app <span class="kfeel-mini"><img src="iconos/kfeel.png" alt="" width="20" height="20">KFeel</span></span></p><div class="insignias"></div></section>
+  <main class="tarjetas" aria-label="Formulario de expositores y descarga de KFeel">
+    <p class="entrada entra" style="--n:4"><span class="sticker" aria-label="Entrada: 9.99 dólares">US$9.99</span><span>Tu entrada, en la app <span class="kfeel-mini"><img src="iconos/kfeel.png" alt="" width="20" height="20">KFeel</span></span></p>
+  </main>
 
 
 <script type="module">
-  import { BOTONES, TIENDAS, externo, plazo, vibrarAlCambiar, avisarPendientes, redDeOrigen, enlaceTienda } from './enlaces.js?v=12';
-  import { crearRueda } from './rueda.js?v=2';
+  import { BOTONES, TIENDAS, externo, plazo, avisarPendientes, redDeOrigen, enlaceTienda } from './enlaces.js?v=13';
   avisarPendientes();
 
-  // En el cartel todos los íconos van en blanco dentro de un círculo rojo, como en "¿Cómo acceder?"
+  // Los íconos van en blanco dentro de un círculo rojo, como en "¿Cómo acceder?"
   // (el puesto de expositores sale del ícono oficial de la marca, recortado como silueta en PNG)
   const glifo = e => `<span class="ico-m" style="--src:url('iconos/${e.icono.includes('.') ? e.icono : e.icono + '.svg'}')" aria-hidden="true"></span>`;
 
-  const N = BOTONES.length;
-  const escenario = document.querySelector('.escenario');
-  escenario.innerHTML = [...BOTONES, ...BOTONES].map((e, i) => {
-    const pl = plazo(e);
-    return `
-    <a class="item${pl?.cerrado ? ' cerrado' : ''}" href="${e.url}"${externo(e)}${i >= N ? ' aria-hidden="true" tabindex="-1"' : ''}>
-      <span class="disco">${glifo(e)}</span>
-      <span class="txt"><b>${e.titulo}</b></span>
+  // Las tiendas llevan la red de origen dentro del enlace de Google Play (y para los píxeles)
+  const red = redDeOrigen();
+  const tarjeta = (e, n, href, evento) => `
+    <a class="tarjeta entra${plazo(e)?.cerrado ? ' cerrado' : ''}" style="--n:${n}" href="${href}"${externo(e)} data-boton="${e.titulo}"${evento ? ` data-evento="${evento}"` : ''} aria-label="${e.nombre}: ${e.arriba}">
+      <img src="fotos/${e.foto}.webp" alt="" style="object-position:${e.encuadre}" decoding="async">
+      <span class="pie"><span class="disco">${glifo(e)}</span><span class="txt"><small>${e.arriba}</small><b>${e.nombre}</b></span><span class="flecha" aria-hidden="true">→</span></span>
     </a>`;
-  }).join('');
-
-  await document.fonts.ready;
-  escenario.querySelectorAll('.txt b').forEach(b => {
-    for (let t = 17; t > 14 && b.scrollWidth > b.clientWidth; t -= 0.5) b.style.fontSize = `${t - 0.5}px`;
-  });
-
-  const R = Math.min(340, escenario.clientHeight * 0.7), GRADOS = 72 / R * 180 / Math.PI;
-  let rueda;
-  rueda = crearRueda({
-    escenario,
-    items: [...escenario.querySelectorAll('.item')],
-    paso: R * GRADOS * Math.PI / 180,
-    toqueDirecto: 2.2, // cualquier botón visible se abre con un toque
-    giro: 0,           // quieta: solo se mueve cuando la persona la arrastra
-    inicio: 0,         // sin giro de entrada
-    // al cargar queda seleccionado el del medio, así se ven los tres formularios
-    centro: 1,
-    alCuadro: vibrarAlCambiar(() => rueda, N),
-    colocar(el, d) {
-      const a = d * GRADOS, k = Math.abs(d);
-      if (k > 1.7) { el.style.visibility = 'hidden'; return; }
-      const r = a * Math.PI / 180;
-      el.style.visibility = '';
-      el.style.transform = `translate(-50%, -50%) translate3d(0, ${R * Math.sin(r)}px, ${R * (Math.cos(r) - 1)}px) rotateX(${-a}deg)`;
-      el.style.opacity = Math.cos(r) ** 1.4 * Math.min(1, Math.max(0, (1.7 - k) / 0.6));
-    },
-  });
+  const tarjetas = document.querySelector('.tarjetas'), entrada = tarjetas.querySelector('.entrada');
+  entrada.insertAdjacentHTML('beforebegin', BOTONES.map(e => tarjeta(e, 3, e.url)).join(''));
+  entrada.insertAdjacentHTML('afterend', TIENDAS.map((t, i) => tarjeta(t, 5 + i, enlaceTienda(t, red), t.evento)).join(''));
 
   {
     const hoy = new Date(), fiesta = new Date(2026, 10, 28);
@@ -206,14 +168,6 @@ src="https://www.facebook.com/tr?id=1114796387611197&ev=PageView&noscript=1"
       c.hidden = false;
     });
   }
-
-  // Las insignias de las tiendas, con la red de origen dentro del enlace de Google Play (y para los píxeles)
-  const red = redDeOrigen();
-  const glifoTienda = t => `<span class="ico-m" style="--src:url('iconos/${t.icono}.svg')" aria-hidden="true"></span>`;
-  document.querySelector('.insignias').innerHTML = TIENDAS.map(t => `
-    <a class="tienda" href="${enlaceTienda(t, red)}"${externo(t)} data-boton="${t.titulo}" data-evento="${t.evento}" aria-label="${t.titulo}: ${t.arriba} ${t.abajo}">
-      ${glifoTienda(t)}<span class="txt"><small>${t.arriba}</small><b>${t.abajo}</b></span>
-    </a>`).join('');
 
   // Cada toque que abre un enlace se mide en los píxeles de Meta y TikTok, con el origen de la visita.
   // En Google Analytics solo se cuentan los toques en las tiendas: kfeel_iphone y kfeel_android.
@@ -240,19 +194,12 @@ src="https://www.facebook.com/tr?id=1114796387611197&ev=PageView&noscript=1"
     }
   }
 
-  // Rueda: en fase de burbuja; si la rueda canceló el toque (fue un arrastre), defaultPrevented ya es true y no se cuenta
-  escenario.addEventListener('click', e => {
-    const a = e.target.closest('.item');
+  tarjetas.addEventListener('click', e => {
+    const a = e.target.closest('.tarjeta');
     if (!a || e.defaultPrevented) return;
     const href = a.getAttribute('href');
     if (!href || href.startsWith('#')) return;
-    medir(a.querySelector('b').textContent, href);
-  });
-
-  // Insignias de las tiendas
-  document.querySelector('.insignias').addEventListener('click', e => {
-    const a = e.target.closest('.tienda');
-    if (a) medir(a.dataset.boton, a.getAttribute('href'), a.dataset.evento);
+    medir(a.dataset.boton, href, a.dataset.evento);
   });
 </script>
 </body>
