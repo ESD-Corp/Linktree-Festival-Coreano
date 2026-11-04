@@ -92,6 +92,10 @@ porque los scripts son módulos.
 evento solo sale cuando la dirección trae esa campaña. Quien entra por la página principal (aunque venga de la
 bio de Instagram sin `/ig`) no manda evento de origen: cuenta solo como `page_view`.
 Para distinguir publicaciones, agrega `?v=` con un nombre corto: `/tt?v=reel-audicion` llega como `utm_content=reel-audicion`.
+Los anuncios también van al enlace corto (TikTok Ads → `/tt` con los parámetros sugeridos por TikTok): si traen
+`utm_medium=paid` llegan con medio `paid` y el nombre de la campaña en `utm_content`, y la llegada sale igual.
+`utm_id`, `ttclid`, `fbclid` y cualquier otro parámetro pasan tal cual. Las etiquetas que Instagram agrega a la bio
+(`ig` / `social` / `link_in_bio`) no cambian nada.
 
 | Evento | Cuándo |
 |---|---|
