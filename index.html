@@ -37,6 +37,35 @@ fbq('init', '1114796387611197');
 fbq('track', 'PageView');
 </script>
 <!-- End Meta Pixel Code -->
+<script>
+// Permanencia2s (Meta): se manda una vez por visita cuando la página lleva 2 s a la vista.
+// Si la persona cambia de app o de pestaña, el reloj se pausa y sigue al volver.
+(function () {
+  var UMBRAL = 2000, acumulado = 0, inicio = null, disparado = false, timer = null;
+
+  function disparar() {
+    if (disparado) return;
+    disparado = true;
+    if (typeof fbq === 'function') fbq('trackCustom', 'Permanencia2s');
+  }
+  function iniciar() {
+    if (disparado || inicio !== null) return;
+    inicio = Date.now();
+    timer = setTimeout(disparar, UMBRAL - acumulado);
+  }
+  function pausar() {
+    if (inicio === null) return;
+    acumulado += Date.now() - inicio;
+    inicio = null;
+    clearTimeout(timer);
+  }
+
+  document.addEventListener('visibilitychange', function () {
+    document.visibilityState === 'visible' ? iniciar() : pausar();
+  });
+  if (document.visibilityState === 'visible') iniciar();
+})();
+</script>
 <!-- TikTok Pixel Code Start -->
 <script>
 !function (w, d, t) {

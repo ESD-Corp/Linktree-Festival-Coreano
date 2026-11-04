@@ -43,8 +43,9 @@ se miden solo en los píxeles de Meta y TikTok.
 
 ## Píxel de Meta
 
-Píxel «Pixel Festival Coreano» (`1114796387611197`, portafolio ESD Corp). Envía `PageView` al cargar y, en
-cada toque que abre un botón:
+Píxel «Pixel Festival Coreano» (`1114796387611197`, portafolio ESD Corp). Envía `PageView` al cargar,
+`Permanencia2s` (evento propio) una vez por visita cuando la página lleva 2 s a la vista (el reloj se pausa
+si la persona cambia de app o de pestaña) y, en cada toque que abre un botón:
 
 | Botón | Evento estándar | Evento propio |
 |---|---|---|
