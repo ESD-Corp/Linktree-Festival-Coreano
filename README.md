@@ -97,6 +97,26 @@ Los anuncios también van al enlace corto (TikTok Ads → `/tt` con los parámet
 `utm_id`, `ttclid`, `fbclid` y cualquier otro parámetro pasan tal cual. Las etiquetas que Instagram agrega a la bio
 (`ig` / `social` / `link_in_bio`) no cambian nada.
 
+## Enlaces de pauta a las tiendas
+
+Meta no acepta un anuncio de Tráfico que apunte directo a Google Play o a App Store: lo pasa a modo app y pide el
+ID de la app en Meta for Developers. Por eso los anuncios que quieren llevar a la tienda apuntan a nuestro dominio y
+`tienda.js` hace el salto:
+
+| Enlace | A dónde lleva |
+|---|---|
+| `festivalcoreanord.com.do/android` | Google Play |
+| `festivalcoreanord.com.do/iphone` | App Store |
+| `festivalcoreanord.com.do/app` | Según el teléfono: Android a Google Play, iPhone a App Store, computadora a la página principal |
+
+Antes de saltar carga Analytics y los píxeles de Meta y TikTok. El `PageView` del píxel es la «vista de la página de
+destino», así que las campañas pueden optimizar por eso. Además se mandan `salto_tienda` (Analytics) y `SaltoTienda`
+(Meta), los dos con `tienda` = `android` o `iphone`. El salto ocurre 300 ms después de que cargan esos scripts,
+y nunca más de 1,5 s después de abrir la página. Las etiquetas `utm_*` del anuncio no se reescriben (la pauta no se
+mezcla con `/ig` y `/tt`) y Google Play las recibe en `referrer`.
+URL para los anuncios de Meta: `https://festivalcoreanord.com.do/android?utm_source={{site_source_name}}&utm_medium=paid&utm_campaign={{campaign.name}}&utm_id={{campaign.id}}&utm_content={{ad.name}}`
+(igual con `/iphone`).
+
 | Evento | Cuándo |
 |---|---|
 | `kfeel_android` | Cada toque en la insignia de Google Play (sin parámetros) |
