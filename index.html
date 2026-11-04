@@ -38,18 +38,19 @@ fbq('track', 'PageView');
 </script>
 <!-- End Meta Pixel Code -->
 <script>
-// Permanencia2s (Meta): se manda una vez por visita cuando la página lleva 2 s a la vista.
-// Si la persona cambia de app o de pestaña, el reloj se pausa y sigue al volver.
+// Permanencia1s (Meta): se manda una vez por carga de página cuando la página ya terminó de cargar
+// (evento load: textos, fotos y estilos) y lleva 1 s a la vista. Si la persona cambia de app o de pestaña,
+// el reloj se pausa y sigue al volver.
 (function () {
-  var UMBRAL = 2000, acumulado = 0, inicio = null, disparado = false, timer = null;
+  var UMBRAL = 1000, acumulado = 0, inicio = null, disparado = false, cargada = false, timer = null;
 
   function disparar() {
     if (disparado) return;
     disparado = true;
-    if (typeof fbq === 'function') fbq('trackCustom', 'Permanencia2s');
+    if (typeof fbq === 'function') fbq('trackCustom', 'Permanencia1s');
   }
   function iniciar() {
-    if (disparado || inicio !== null) return;
+    if (disparado || !cargada || inicio !== null || document.visibilityState !== 'visible') return;
     inicio = Date.now();
     timer = setTimeout(disparar, UMBRAL - acumulado);
   }
@@ -59,11 +60,12 @@ fbq('track', 'PageView');
     inicio = null;
     clearTimeout(timer);
   }
+  function alCargar() { cargada = true; iniciar(); }
 
   document.addEventListener('visibilitychange', function () {
     document.visibilityState === 'visible' ? iniciar() : pausar();
   });
-  if (document.visibilityState === 'visible') iniciar();
+  if (document.readyState === 'complete') alCargar(); else window.addEventListener('load', alCargar);
 })();
 </script>
 <!-- TikTok Pixel Code Start -->
