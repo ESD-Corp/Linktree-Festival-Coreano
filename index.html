@@ -38,10 +38,12 @@ fbq('track', 'PageView');
 </script>
 <!-- End Meta Pixel Code -->
 <script>
-// Permanencia1s (Meta): se manda una vez por carga de página cuando la página ya terminó de cargar
-// (evento load: textos, fotos y estilos) y lleva 1 s a la vista. Si la persona cambia de app o de pestaña,
-// el reloj se pausa y sigue al volver.
+// Permanencia1s (Meta): solo en las visitas que llegaron por /ig (utm_source=instagram y utm_campaign=kfestrd2026).
+// Se manda una vez por carga de página cuando la página ya terminó de cargar (evento load: textos, fotos y
+// estilos) y lleva 1 s a la vista. Si la persona cambia de app o de pestaña, el reloj se pausa y sigue al volver.
 (function () {
+  var q = new URLSearchParams(location.search);
+  if (q.get('utm_campaign') !== 'kfestrd2026' || q.get('utm_source') !== 'instagram') return;
   var UMBRAL = 1000, acumulado = 0, inicio = null, disparado = false, cargada = false, timer = null;
 
   function disparar() {
