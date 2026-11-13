@@ -10,8 +10,11 @@
 <style>
   body { margin: 0; min-height: 100dvh; display: grid; place-items: center; background: #23315b url('/assets/papel.webp') center / cover; background-blend-mode: multiply; color: #fff;
          font: 600 17px "Avenir Next", "Avenir", "Figtree", system-ui, sans-serif; }
-  a { color: #f2dcad; }
+  /* Logo animado del kit de marca (marca-grafica/01-logo); el contorno blanco lo despega del marino, como en el linktree */
+  a { display: block; width: min(62vw, 280px); }
+  img { display: block; width: 100%; height: auto;
+        filter: drop-shadow(3px 0 0 #fff) drop-shadow(-3px 0 0 #fff) drop-shadow(0 3px 0 #fff) drop-shadow(0 -3px 0 #fff); }
 </style>
 </head>
-<body><p><a href="/">Abriendo KFeel…</a></p></body>
+<body><a href="/"><img src="/assets/logo-animado.svg" width="987" height="851" alt="Festival Coreano RD"></a></body>
 </html>
