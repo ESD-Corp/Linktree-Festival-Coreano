@@ -6,15 +6,28 @@
 <meta name="robots" content="noindex">
 <title>KFeel · Festival Coreano RD 2026</title>
 <!-- Enlace de pauta: anuncios para Android, lleva a Google Play (ver tienda.js). El HTML no nombra la tienda: el robot de Meta lo lee sin JavaScript y, si ve Google Play o App Store, pasa el anuncio a modo app -->
-<script type="module" src="/tienda.js?v=1" data-tienda="android"></script>
+<script type="module" src="/tienda.js?v=2" data-tienda="android"></script>
 <style>
-  body { margin: 0; min-height: 100dvh; display: grid; place-items: center; background: #23315b url('/assets/papel.webp') center / cover; background-blend-mode: multiply; color: #fff;
+  body { margin: 0; min-height: 100dvh; display: grid; place-items: center; align-content: center; gap: 34px; background: #23315b url('/assets/papel.webp') center / cover; background-blend-mode: multiply; color: #fff;
          font: 600 17px "Avenir Next", "Avenir", "Figtree", system-ui, sans-serif; }
   /* Logo animado del kit de marca (marca-grafica/01-logo); el contorno blanco lo despega del marino, como en el linktree */
   a { display: block; width: min(62vw, 280px); }
   img { display: block; width: 100%; height: auto;
         filter: drop-shadow(3px 0 0 #fff) drop-shadow(-3px 0 0 #fff) drop-shadow(0 3px 0 #fff) drop-shadow(0 -3px 0 #fff); }
+  /* Contador de carga (lo mueve tienda.js): cifra en blanco con el % en rojo, barra roja y etiqueta en crema */
+  .carga { width: min(56vw, 220px); text-align: center; }
+  .cifra { font-weight: 900; font-size: 54px; line-height: 1; letter-spacing: -0.025em; font-variant-numeric: tabular-nums; }
+  .cifra small { font-size: 0.5em; font-weight: 500; color: #e31a26; margin-left: 4px; vertical-align: 0.55em; }
+  .pista { height: 6px; margin: 14px 0 12px; border-radius: 3px; background: rgba(242, 220, 173, 0.22); overflow: hidden; }
+  .pista span { display: block; height: 100%; background: #e31a26; border-radius: inherit; transform: scaleX(0); transform-origin: left; }
+  .etiqueta { font-size: 11px; font-weight: 700; letter-spacing: 5px; text-transform: uppercase; padding-left: 5px; color: #f2dcad; }
 </style>
 </head>
-<body><a href="/"><img src="/assets/logo-animado.svg" width="987" height="851" alt="Festival Coreano RD"></a></body>
+<body><a href="/"><img src="/assets/logo-animado.svg" width="987" height="851" alt="Festival Coreano RD"></a>
+<div class="carga" aria-hidden="true">
+  <div class="cifra"><span data-cifra>0</span><small>%</small></div>
+  <div class="pista"><span data-barra></span></div>
+  <div class="etiqueta">Cargando…</div>
+</div>
+</body>
 </html>

@@ -66,13 +66,41 @@ function cargar(src) {
   document.head.appendChild(s);
 }
 
+// El contador de carga bajo el logo: sube rápido y se va frenando antes del 100 (no sabemos cuánto tarda la carga);
+// al saltar completa el 100 % y recién ahí se va a la tienda.
+const CIERRE = 150; // ms que se ve el 100 % antes de saltar
+const cifra = document.querySelector('[data-cifra]'), barra = document.querySelector('[data-barra]');
+const inicio = performance.now();
+let avance = 0, cuadro = requestAnimationFrame(contar);
+function pintar(p) {
+  cifra.textContent = Math.round(p);
+  barra.style.transform = `scaleX(${p / 100})`;
+}
+function contar(ahora) {
+  avance = 95 * (1 - Math.exp(-(ahora - inicio) / 450));
+  pintar(avance);
+  cuadro = requestAnimationFrame(contar);
+}
+function completar(listo) {
+  cancelAnimationFrame(cuadro);
+  const desde = avance, t0 = performance.now();
+  requestAnimationFrame(function paso(ahora) {
+    const k = Math.min(1, (ahora - t0) / CIERRE);
+    pintar(desde + (100 - desde) * k);
+    k < 1 ? requestAnimationFrame(paso) : listo();
+  });
+}
+
 // El salto: cuando ya cargaron los scripts de Analytics y de los píxeles (evento load) más una pausa corta para que
 // alcancen a mandar, y nunca después de TOPE aunque algún script no cargue.
 let saltado = false;
 function saltar() {
   if (saltado) return;
   saltado = true;
-  location.replace(destino);
+  let ido = false;
+  const ir = () => { if (!ido) { ido = true; location.replace(destino); } };
+  completar(ir);
+  setTimeout(ir, CIERRE + 100); // por si la pestaña no pinta cuadros (requestAnimationFrame se frena en segundo plano)
 }
 setTimeout(saltar, TOPE);
 if (document.readyState === 'complete') setTimeout(saltar, ESPERA);
